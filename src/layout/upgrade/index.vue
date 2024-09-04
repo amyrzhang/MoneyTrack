@@ -1,34 +1,34 @@
 <template>
-	<div class="upgrade-dialog">
-		<el-dialog
-			v-model="state.isUpgrade"
-			width="300px"
-			destroy-on-close
-			:show-close="false"
-			:close-on-click-modal="false"
-			:close-on-press-escape="false"
-		>
-			<div class="upgrade-title">
-				<div class="upgrade-title-warp">
-					<span class="upgrade-title-warp-txt">{{ $t('message.upgrade.title') }}</span>
-					<span class="upgrade-title-warp-version">v{{ state.version }}</span>
-				</div>
-			</div>
-			<div class="upgrade-content">
-				{{ getThemeConfig.globalTitle }} {{ $t('message.upgrade.msg') }}
-				<div class="mt5">
-					<el-link type="primary" class="font12" href="https://gitee.com/lyt-top/vue-next-admin/blob/master/CHANGELOG.md" target="_black">
-						CHANGELOG.md
-					</el-link>
-				</div>
-				<div class="upgrade-content-desc mt5">{{ $t('message.upgrade.desc') }}</div>
-			</div>
-			<div class="upgrade-btn">
-				<el-button round size="default" type="info" text @click="onCancel">{{ $t('message.upgrade.btnOne') }}</el-button>
-				<el-button type="primary" round size="default" @click="onUpgrade" :loading="state.isLoading">{{ state.btnTxt }}</el-button>
-			</div>
-		</el-dialog>
-	</div>
+<!--	<div class="upgrade-dialog">-->
+<!--		<el-dialog-->
+<!--			v-model="state.isUpgrade"-->
+<!--			width="300px"-->
+<!--			destroy-on-close-->
+<!--			:show-close="false"-->
+<!--			:close-on-click-modal="false"-->
+<!--			:close-on-press-escape="false"-->
+<!--		>-->
+<!--			<div class="upgrade-title">-->
+<!--				<div class="upgrade-title-warp">-->
+<!--					<span class="upgrade-title-warp-txt">{{ $t('message.upgrade.title') }}</span>-->
+<!--					<span class="upgrade-title-warp-version">v{{ state.version }}</span>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="upgrade-content">-->
+<!--				{{ getThemeConfig.globalTitle }} {{ $t('message.upgrade.msg') }}-->
+<!--				<div class="mt5">-->
+<!--					<el-link type="primary" class="font12" href="https://gitee.com/lyt-top/vue-next-admin/blob/master/CHANGELOG.md" target="_black">-->
+<!--						CHANGELOG.md-->
+<!--					</el-link>-->
+<!--				</div>-->
+<!--				<div class="upgrade-content-desc mt5">{{ $t('message.upgrade.desc') }}</div>-->
+<!--			</div>-->
+<!--			<div class="upgrade-btn">-->
+<!--				<el-button round size="default" type="info" text @click="onCancel">{{ $t('message.upgrade.btnOne') }}</el-button>-->
+<!--				<el-button type="primary" round size="default" @click="onUpgrade" :loading="state.isLoading">{{ state.btnTxt }}</el-button>-->
+<!--			</div>-->
+<!--		</el-dialog>-->
+<!--	</div>-->
 </template>
 
 <script setup lang="ts" name="layoutUpgrade">

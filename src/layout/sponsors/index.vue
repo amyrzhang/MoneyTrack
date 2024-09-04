@@ -1,15 +1,15 @@
 <template>
-	<div class="sponsors-container" title="点击前往体验" v-show="state.sponsors.isShow" @click="onSponsorsClick">
-		<el-carousel height="240px" indicator-position="none" :arrow="setCarouselShow" @change="onCarouselChange">
-			<el-carousel-item v-for="(v, k) in state.sponsors.list" :key="k">
-				<img :src="v.url" class="sponsors-img" />
-				<div class="sponsors-text" v-html="v.text"></div>
-			</el-carousel-item>
-		</el-carousel>
-		<div class="sponsors-close">
-			<SvgIcon name="ele-Close" :size="12" title="关闭赞助商" @click.stop="onCloseSponsors" />
-		</div>
-	</div>
+<!--	<div class="sponsors-container" title="点击前往体验" v-show="state.sponsors.isShow" @click="onSponsorsClick">-->
+<!--		<el-carousel height="240px" indicator-position="none" :arrow="setCarouselShow" @change="onCarouselChange">-->
+<!--			<el-carousel-item v-for="(v, k) in state.sponsors.list" :key="k">-->
+<!--				<img :src="v.url" class="sponsors-img" />-->
+<!--				<div class="sponsors-text" v-html="v.text"></div>-->
+<!--			</el-carousel-item>-->
+<!--		</el-carousel>-->
+<!--		<div class="sponsors-close">-->
+<!--			<SvgIcon name="ele-Close" :size="12" title="关闭赞助商" @click.stop="onCloseSponsors" />-->
+<!--		</div>-->
+<!--	</div>-->
 </template>
 
 <script setup lang="ts" name="layoutSponsors">
