@@ -17,6 +17,7 @@
 <script setup lang="ts" name="makeTableDemo">
 import { defineAsyncComponent, reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
+import { useTableApi } from "/@/api/table";
 
 // 引入组件
 const Table = defineAsyncComponent(() => import('/@/components/table/index.vue'));
@@ -30,13 +31,18 @@ const state = reactive<TableDemoState>({
 		data: [],
 		// 表头内容（必传，注意格式）
 		header: [
-			{ key: 'name', colWidth: '', title: '应检尽检核酸采样点名称', type: 'text', isCheck: true },
-			{ key: 'address', colWidth: '', title: '详细地址', type: 'text', isCheck: true },
-			{ key: 'phone', colWidth: '', title: '采样点联系电话', type: 'text', isCheck: true },
-			{ key: 'time', colWidth: '', title: '开放时间', type: 'text', isCheck: true },
-			{ key: 'isSupport', colWidth: '', title: '是否支持24小时核酸检测', type: 'text', isCheck: true },
-			{ key: 'image', colWidth: '', width: '70', height: '40', title: '图片描述', type: 'image', isCheck: true },
-		],
+      { key: 'time', colWidth: '', title: '交易时间', type: 'text', isCheck: true },
+      { key: 'source', colWidth: '', title: '来源', type: 'text', isCheck: true },
+      { key: 'expenditure_income', colWidth: '', title: '收/支', type: 'text', isCheck: true },
+      { key: 'status', colWidth: '', title: '支付状态', type: 'text', isCheck: true },
+      { key: 'type', colWidth: '', title: '类型', type: 'text', isCheck: true },
+      { key: 'category', colWidth: '', title: '类别', type: 'text', isCheck: true },
+      { key: 'counterparty', colWidth: '', title: '交易对方', type: 'text', isCheck: true },
+      { key: 'goods', colWidth: '', title: '商品', type: 'text', isCheck: true },
+      { key: 'reversed', colWidth: '', title: '是否冲账', type: 'text', isCheck: true },
+      { key: 'amount', colWidth: '', title: '金额', type: 'number', isCheck: true },
+      { key: 'pay_method', colWidth: '', title: '支付方式', type: 'text', isCheck: true },
+    ],
 		// 配置项（必传）
 		config: {
 			total: 0, // 列表总数
@@ -78,24 +84,22 @@ const state = reactive<TableDemoState>({
 
 // 初始化列表数据
 const getTableData = () => {
+  const {  getAdminTable } = useTableApi(); // 获取 API 数据
 	state.tableData.config.loading = true;
 	state.tableData.data = [];
-	for (let i = 0; i < 20; i++) {
-		state.tableData.data.push({
-			id: `123456789${i + 1}`,
-			name: `莲塘别墅广场${i + 1}`,
-			address: `中沧公寓中庭榕树下${i + 1}`,
-			phone: `0592-6081259${i + 1}`,
-			time: `6:00 ~ 24:00`,
-			isSupport: `${i % 2 === 0 ? '是' : '否'}`,
-			image: `https://img2.baidu.com/it/u=417454395,2713356475&fm=253&fmt=auto?w=200&h=200`,
-		});
-	}
-	// 数据总数（模拟，真实从接口取）
-	state.tableData.config.total = state.tableData.data.length;
-	setTimeout(() => {
-		state.tableData.config.loading = false;
-	}, 500);
+  getAdminTable().then((res) => {
+    state.tableData.data = res;
+    // state.tableData.config.total = res.total;
+    console.log(res);
+  })
+      .catch((err) => {
+        console.error('Error fetching data data: ', err);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          state.tableData.config.loading = false;
+        }, 500);
+      });
 };
 // 搜索点击时表单回调
 const onSearch = (data: EmptyObjectType) => {

@@ -10,21 +10,21 @@ import request from '/@/utils/request';
  * @method getAdminTable 获取后端动态路由菜单(admin)
  * @method getTestMenu 获取后端动态路由菜单(test)
  */
-export function useMenuApi() {
-	return {
-		getAdminTable: (params?: object) => {
-			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
-				method: 'get',
-				params,
-			});
-		},
-		getTestMenu: (params?: object) => {
-			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-				method: 'get',
-				params,
-			});
-		},
-	};
+export function useTableApi() {
+    return {
+        getAdminTable: (params?: object) => {
+            return request({
+                url: 'http://localhost:5000/api/data/transactions.json',
+                method: 'get',
+                params,
+            });
+        },
+        getTestMenu: (params?: object) => {
+            return request({
+                url: 'http://localhost:5000/api/data/transactions.json',
+                method: 'get',
+                params,
+            });
+        },
+    };
 }

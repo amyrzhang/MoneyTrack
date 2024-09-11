@@ -102,9 +102,9 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启色弱模式
 			isInvert: false,
 			// 是否开启水印
-			isWartermark: true,
+			isWartermark: false,
 			// 水印文案
-			wartermarkText: 'vue-next-admin',
+			wartermarkText: '',
 
 			/**
 			 * 其它设置

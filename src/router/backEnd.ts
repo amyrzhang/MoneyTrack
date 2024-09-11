@@ -112,7 +112,7 @@ export function getBackEndControlRoutes() {
 	const { userInfos } = storeToRefs(stores);
 	const auth = userInfos.value.roles[0];
 	// 管理员 admin
-	if (auth === 'admin') return menuApi.getAdminMenu();
+	if (auth === 'admin') return menuApi.getAdminTable();
 	// 其它用户 test
 	else return menuApi.getTestMenu();
 }

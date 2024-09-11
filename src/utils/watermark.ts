@@ -44,4 +44,4 @@ const watermark = {
 };
 
 // 导出方法
-// export default watermark;
+export default watermark;
