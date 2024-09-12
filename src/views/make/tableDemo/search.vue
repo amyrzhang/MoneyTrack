@@ -1,45 +1,62 @@
 <template>
-	<div class="table-search-container" v-if="props.search.length > 0">
-		<el-form ref="tableSearchRef" :model="state.form" size="default" label-width="100px" class="table-form">
-			<el-row>
-				<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20" v-for="(val, key) in search" :key="key" v-show="key === 0 || state.isToggle">
-					<template v-if="val.type !== ''">
-						<el-form-item
-							:label="val.label"
-							:prop="val.prop"
-							:rules="[{ required: val.required, message: `${val.label}不能为空`, trigger: val.type === 'input' ? 'blur' : 'change' }]"
-						>
-							<el-input v-model="state.form[val.prop]" :placeholder="val.placeholder" clearable v-if="val.type === 'input'" style="width: 100%" />
-							<el-date-picker
-								v-model="state.form[val.prop]"
-								type="date"
-								:placeholder="val.placeholder"
-								v-else-if="val.type === 'date'"
-								style="width: 100%"
-							/>
-							<el-select v-model="state.form[val.prop]" :placeholder="val.placeholder" v-else-if="val.type === 'select'" style="width: 100%">
-								<el-option v-for="item in val.options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-							</el-select>
-						</el-form-item>
-					</template>
-				</el-col>
-				<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-					<el-form-item class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
-						<template #label v-if="search.length > 1">
-							<div class="table-form-btn-toggle ml10" @click="state.isToggle = !state.isToggle">
-								<span>{{ state.isToggle ? '收筛选' : '展筛选' }}</span>
-								<SvgIcon :name="state.isToggle ? 'ele-ArrowUp' : 'ele-ArrowDown'" />
-							</div>
-						</template>
-						<div>
-							<el-button size="default" type="primary" @click="onSearch(tableSearchRef)">查询 </el-button>
-							<el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> 重置 </el-button>
-						</div>
-					</el-form-item>
-				</el-col>
-			</el-row>
-		</el-form>
-	</div>
+  <div class="table-search-container" v-if="props.search.length > 0">
+    <el-upload
+        class="upload-btn ml10"
+        action="http://localhost:5000/upload"
+        :on-success="handleUploadSuccess"
+        :on-error="handleUploadError"
+    >
+      <el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;">
+        上传
+      </el-button>
+    </el-upload>
+    <el-form ref="tableSearchRef" :model="state.form" size="default" label-width="100px" class="table-form">
+      <el-row>
+        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20" v-for="(val, key) in search" :key="key"
+                v-show="key === 0 || state.isToggle">
+          <template v-if="val.type !== ''">
+            <el-form-item
+                :label="val.label"
+                :prop="val.prop"
+                :rules="[{ required: val.required, message: `${val.label}不能为空`, trigger: val.type === 'input' ? 'blur' : 'change' }]"
+            >
+              <el-input v-model="state.form[val.prop]" :placeholder="val.placeholder" clearable
+                        v-if="val.type === 'input'" style="width: 100%"/>
+              <el-date-picker
+                  v-model="state.form[val.prop]"
+                  type="date"
+                  :placeholder="val.placeholder"
+                  v-else-if="val.type === 'date'"
+                  style="width: 100%"
+              />
+              <el-select v-model="state.form[val.prop]" :placeholder="val.placeholder" v-else-if="val.type === 'select'"
+                         style="width: 100%">
+                <el-option v-for="item in val.options" :key="item.value" :label="item.label"
+                           :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </template>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
+          <el-form-item class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
+            <template #label v-if="search.length > 1">
+              <div class="table-form-btn-toggle ml10" @click="state.isToggle = !state.isToggle">
+                <span>{{ state.isToggle ? '收筛选' : '展筛选' }}</span>
+                <SvgIcon :name="state.isToggle ? 'ele-ArrowUp' : 'ele-ArrowDown'"/>
+              </div>
+            </template>
+            <div>
+
+              <el-button size="default" type="primary" @click="onSearch(tableSearchRef)"> 查询</el-button>
+              <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> 重置</el-button>
+
+            </div>
+          </el-form-item>
+        </el-col>
+
+      </el-row>
+    </el-form>
+  </div>
 </template>
 
 <script setup lang="ts" name="makeTableDemoSearch">
@@ -82,6 +99,19 @@ const onReset = (formEl: FormInstance | undefined) => {
 	formEl.resetFields();
 	emit('search', state.form);
 };
+// 上传
+const handleUploadSuccess = (response: any, file: any) => {
+  console.log(response);
+};
+const handleUploadError = (err: any, file: any) => {
+  console.log(err);
+  if (err.response.status === 409) {
+    errorMessage = '文件已存在';
+  }
+
+  this.$message.error(errorMessage);
+};
+
 // 初始化 form 字段，取自父组件 search.prop
 const initFormField = () => {
 	if (props.search.length <= 0) return false;
@@ -91,6 +121,7 @@ const initFormField = () => {
 onMounted(() => {
 	initFormField();
 });
+
 </script>
 
 <style scoped lang="scss">

@@ -84,9 +84,9 @@ const state = reactive<TableDemoState>({
 
 // 初始化列表数据
 const getTableData = () => {
-  const {  getAdminTable } = useTableApi(); // 获取 API 数据
-	state.tableData.config.loading = true;
-	state.tableData.data = [];
+  const {getAdminTable} = useTableApi(); // 获取 API 数据
+  state.tableData.config.loading = true;
+  state.tableData.data = [];
   getAdminTable().then((res) => {
     state.tableData.data = res;
     // state.tableData.config.total = res.total;
