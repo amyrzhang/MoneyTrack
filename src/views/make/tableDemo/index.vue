@@ -31,7 +31,7 @@ const state = reactive<TableDemoState>({
 		data: [],
 		// 表头内容（必传，注意格式）
 		header: [
-      { key: 'time', colWidth: '', title: '交易时间', type: 'text', isCheck: true },
+      { key: 'time', colWidth: '180px', title: '交易时间', type: 'text', isCheck: true },
       { key: 'source', colWidth: '', title: '来源', type: 'text', isCheck: true },
       { key: 'expenditure_income', colWidth: '', title: '收/支', type: 'text', isCheck: true },
       { key: 'status', colWidth: '', title: '支付状态', type: 'text', isCheck: true },
@@ -54,7 +54,7 @@ const state = reactive<TableDemoState>({
 		},
 		// 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
 		search: [
-			{ label: '采样点名称', prop: 'name', placeholder: '请输入应检尽检核酸采样点名称', required: true, type: 'input' },
+			{ label: '潘炜华真帅', prop: 'name', placeholder: '请输入应检尽检核酸采样点名称', required: true, type: 'input' },
 			{ label: '详细地址', prop: 'address', placeholder: '请输入详细地址', required: false, type: 'input' },
 			{ label: '联系电话', prop: 'phone', placeholder: '请输入采样点联系电话', required: false, type: 'input' },
 			{ label: '开放时间', prop: 'time', placeholder: '请选择', required: false, type: 'date' },

@@ -5,8 +5,8 @@
           :xs="24"
           :sm="12"
           :md="12"
-          :lg="6"
-          :xl="6"
+          :lg="8"
+          :xl="8"
           v-for="(v, k) in state.homeOne"
           :key="k"
           :class="{ 'home-media home-media-lg': k > 1, 'home-media-sm': k === 1 }"
@@ -116,15 +116,6 @@ const state = reactive({
       color1: '#6690F9',
       color2: '--next-color-warning-lighter',
       color3: '--el-color-warning',
-    },
-    {
-      num1: '520,43',
-      num2: '-10.01',
-      num3: '访问统计信息',
-      num4: 'fa fa-github-alt',
-      color1: '#FF6462',
-      color2: '--next-color-danger-lighter',
-      color3: '--el-color-danger',
     },
   ],
   homeThree: [
@@ -307,7 +298,7 @@ const initPieChart = () => {
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
-      text: '房屋建筑工程',
+      text: '消费类别统计',
       x: 'left',
       textStyle: { fontSize: '15', color: state.charts.color },
     },
