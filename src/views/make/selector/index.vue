@@ -4,11 +4,12 @@
 			<IconSelector @get="onGetIcon" @clear="onClearIcon" v-model="state.modelIcon" />
 		</el-card>
 
-		<el-card shadow="hover" header="图标选择器(宽度自动)：参数" class="mt15">
+		<el-card shadow="hover" header="月度对账单" class="mt15">
 			<el-table :data="state.tableData" style="width: 100%">
 				<el-table-column prop="支付方式" label="资产账户"> </el-table-column>
-				<el-table-column prop="收/支" label="收/支"> </el-table-column>
-				<el-table-column prop="amount" label="金额"> </el-table-column>
+				<el-table-column prop="支出" label="支出"> </el-table-column>
+				<el-table-column prop="收入" label="收入"> </el-table-column>
+        <el-table-column prop="不计收支" label="不计收支"> </el-table-column>
 			</el-table>
 		</el-card>
 
