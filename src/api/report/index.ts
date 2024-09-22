@@ -14,14 +14,21 @@ export function useReportApi() {
     return {
         getAdminReport: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/data/monthly',
+                url: 'http://localhost:5000/api/report',
                 method: 'get',
                 params,
             });
         },
         getTestMenu: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/data/transactions.json',
+                url: 'http://localhost:5000/api/report',
+                method: 'get',
+                params,
+            });
+        },
+        getAdminCategory: (params?: object) => {
+            return request({
+                url: 'http://localhost:5000/api/report/category',
                 method: 'get',
                 params,
             });

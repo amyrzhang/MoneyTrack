@@ -23,6 +23,7 @@
 import { defineAsyncComponent, reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { useTableApi } from "/@/api/table";
+import { verifyNumberRMB } from "/@/utils/toolsValidate"
 
 // 引入组件
 const Table = defineAsyncComponent(() => import('/@/components/table/index.vue'));
@@ -45,7 +46,7 @@ const state = reactive<TableDemoState>({
       { key: 'counterparty', colWidth: '', title: '交易对方', type: 'text', isCheck: true },
       { key: 'goods', colWidth: '200px', title: '商品', type: 'text', isCheck: true },
       { key: 'reversed', colWidth: '', title: '是否冲账', type: 'text', isCheck: true },
-      { key: 'amount', colWidth: '', title: '金额', type: 'number', isCheck: true },
+      { key: 'amount', colWidth: '150px', title: '金额', type: 'text', isCheck: true },
       { key: 'pay_method', colWidth: '', title: '支付方式', type: 'text', isCheck: true },
     ],
 		// 配置项（必传）
@@ -102,14 +103,21 @@ const getTableData = () => {
   const { getAdminTable } = useTableApi(); // 获取 API 数据
   state.tableData.config.loading = true;
   state.tableData.data = [];
+
   getAdminTable()
       .then((res) => {
-        state.tableData.data = res;
-        state.tableData.config.total = res.length;
-        console.log(res);
+        // 对 res 中的每个元素进行格式化处理
+        const formattedData = res.map(item => ({
+          ...item,
+          amount: verifyNumberRMB(item.amount)
+        }));
+        console.log(formattedData)
+        state.tableData.data = formattedData;
+        state.tableData.config.total = formattedData.length;
+        console.log(formattedData);
       })
       .catch((err) => {
-        console.error('Error fetching data data: ', err);
+        console.error('Error fetching data: ', err);
       })
       .finally(() => {
         setTimeout(() => {
@@ -117,6 +125,7 @@ const getTableData = () => {
         }, 500);
       });
 };
+
 // 搜索点击时表单回调
 const onSearch = (data: EmptyObjectType) => {
 	state.tableData.param = Object.assign({}, state.tableData.param, { ...data });

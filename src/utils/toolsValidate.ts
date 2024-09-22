@@ -138,6 +138,20 @@ export function verifyNumberComma(val: string) {
 }
 
 /**
+ * 金额用 `,` 区分开，带小数点
+ * @param val 当前值字符串
+ * @returns 返回处理后的字符串
+ */
+export function verifyNumberRMB(val: number): string {
+	const formattedValue = new Intl.NumberFormat('zh-CN', {
+		style: 'currency',
+		currency: 'CNY'
+	}).format(val);
+	// 确保字符串长度为 10，并向左填充空格
+	return formattedValue.padStart(10, ' ');
+}
+
+/**
  * 匹配文字变色（搜索时）
  * @param val 当前值字符串
  * @param text 要处理的字符串值
