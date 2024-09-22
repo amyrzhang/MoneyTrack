@@ -71,8 +71,9 @@ import * as echarts from 'echarts';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
-import {useTableApi} from "/@/api/table";
-import {useReportApi} from "/@/api/report";
+import { useTableApi } from "/@/api/table";
+import { useReportApi } from "/@/api/report";
+import { verifyNumberRMB } from '/@/utils/toolsValidate'
 
 // 定义变量内容
 const homeLineRef = ref();
@@ -91,7 +92,7 @@ const state = reactive({
   } as any,
   homeOne: [
     {
-      num1: '125,12',
+      num1: '',
       num2: '-12.32',
       num3: '月度支出',
       num4: 'fa fa-meetup',
@@ -100,7 +101,7 @@ const state = reactive({
       color3: '--el-color-primary',
     },
     {
-      num1: '653,33',
+      num1: '',
       num2: '+42.32',
       num3: '月度收入',
       num4: 'iconfont icon-ditu',
@@ -109,7 +110,7 @@ const state = reactive({
       color3: '--el-color-success',
     },
     {
-      num1: '125,65',
+      num1: '',
       num2: '+17.32',
       num3: '月度结余',
       num4: 'iconfont icon-zaosheng',
@@ -187,16 +188,9 @@ const initCard = () => {
   const { getAdminReport } = useReportApi(); // 获取 API 数据
   getAdminReport()
       .then((res) => {
-        // 定义人民币格式化函数
-        const formatRMB = (value) => new Intl.NumberFormat('zh-CN', {
-          style: 'currency',
-          currency: 'CNY'
-        }).format(value);
-
-        // 格式化收入、支出和金额
-        state.homeOne[0].num1 = formatRMB(res['expenditure']);
-        state.homeOne[1].num1 = formatRMB(res['income']);
-        state.homeOne[2].num1 = formatRMB(res['balance']);
+        state.homeOne[0].num1 = verifyNumberRMB(res['expenditure']);
+        state.homeOne[1].num1 = verifyNumberRMB(res['income']);
+        state.homeOne[2].num1 = verifyNumberRMB(res['balance']);
       })
       .catch((err) => {
         console.error('Error fetching data data: ', err);
@@ -207,6 +201,16 @@ const initCard = () => {
 const initLineChart = () => {
   if (!state.global.dispose.some((b: any) => b === state.global.homeChartOne)) state.global.homeChartOne.dispose();
   state.global.homeChartOne = markRaw(echarts.init(homeLineRef.value, state.charts.theme));
+
+  const { getAdminAccount } = useReportApi();
+  getAdminAccount()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error('Error fetching data: ', err);
+      })
+
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {

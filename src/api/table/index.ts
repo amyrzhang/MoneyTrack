@@ -14,14 +14,14 @@ export function useTableApi() {
     return {
         getAdminTable: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/data',
+                url: '/api/data',
                 method: 'get',
                 params,
             });
         },
         getTestMenu: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/data/transactions.json',
+                url: '/api/data',
                 method: 'get',
                 params,
             });

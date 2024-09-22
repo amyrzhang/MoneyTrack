@@ -99,12 +99,12 @@ const state = reactive<TableDemoState>({
 });
 
 // 初始化列表数据
-const getTableData = () => {
+const getTableData = (params?: EmptyObjectType) => {
   const { getAdminTable } = useTableApi(); // 获取 API 数据
   state.tableData.config.loading = true;
   state.tableData.data = [];
 
-  getAdminTable()
+  getAdminTable(params)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
         const formattedData = res.map(item => ({
@@ -127,23 +127,8 @@ const getTableData = () => {
 };
 
 // 搜索点击时表单回调
-const onSearch = (data: EmptyObjectType) => {
-	state.tableData.param = Object.assign({}, state.tableData.param, { ...data });
-	const { getAdminTable } = useTableApi();
-  getAdminTable(state.tableData.param)
-      .then((res) => {
-        state.tableData.data = res;
-        state.tableData.config.total = res.length;
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error('Error fetching data data: ', err);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          state.tableData.config.loading = false;
-        }, 500);
-      });
+const onSearch = () => {
+	getTableData(state.tableData.search)
   tableRef.value.pageReset();
 };
 // 删除当前项回调

@@ -14,10 +14,24 @@ export function useReportApi() {
     return {
         getAdminReport: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/report',
+                url: '/api/report',
                 method: 'get',
                 params,
             });
+        },
+        getAdminCategory: (params?: object) => {
+            return request({
+                url: '/api/report/category',
+                method: 'get',
+                params,
+            });
+        },
+        getAdminAccount: (params?: object) => {
+            return request({
+                url: '/api/report/account',
+                method: 'get',
+                params
+            })
         },
         getTestMenu: (params?: object) => {
             return request({
@@ -26,12 +40,6 @@ export function useReportApi() {
                 params,
             });
         },
-        getAdminCategory: (params?: object) => {
-            return request({
-                url: 'http://localhost:5000/api/report/category',
-                method: 'get',
-                params,
-            });
-        },
+
     };
 }

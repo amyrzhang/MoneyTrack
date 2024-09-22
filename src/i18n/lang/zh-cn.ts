@@ -56,7 +56,7 @@ export default {
 		pagesDrag: '拖动指令',
 		pagesLazyImg: '图片懒加载',
 		makeIndex: '财务报表',
-		makeSelector: '图标选择器',
+		makeSelector: '资产管理',
 		makeNoticeBar: '滚动通知栏',
 		makeSvgDemo: 'svgIcon 演示',
 		makeTableDemo: '收入支出表',
