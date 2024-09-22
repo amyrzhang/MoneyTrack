@@ -14,7 +14,7 @@ export function useTableApi() {
     return {
         getAdminTable: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/data/transactions.json',
+                url: 'http://localhost:5000/api/data',
                 method: 'get',
                 params,
             });
