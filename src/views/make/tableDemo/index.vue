@@ -47,7 +47,7 @@ const state = reactive<TableDemoState>({
       { key: 'goods', colWidth: '200px', title: '商品', type: 'text', isCheck: true },
       { key: 'reversed', colWidth: '', title: '是否冲账', type: 'text', isCheck: true },
       { key: 'amount', colWidth: '150px', title: '金额', type: 'text', isCheck: true },
-      { key: 'pay_method', colWidth: '100px', title: '支付方式', type: 'text', isCheck: true },
+      { key: 'pay_method', colWidth: '150px', title: '支付方式', type: 'text', isCheck: true },
     ],
 		// 配置项（必传）
 		config: {
