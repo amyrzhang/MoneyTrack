@@ -47,7 +47,7 @@ const state = reactive<TableDemoState>({
       { key: 'goods', colWidth: '200px', title: '商品', type: 'text', isCheck: true },
       { key: 'reversed', colWidth: '', title: '是否冲账', type: 'text', isCheck: true },
       { key: 'amount', colWidth: '150px', title: '金额', type: 'text', isCheck: true },
-      { key: 'pay_method', colWidth: '', title: '支付方式', type: 'text', isCheck: true },
+      { key: 'pay_method', colWidth: '100px', title: '支付方式', type: 'text', isCheck: true },
     ],
 		// 配置项（必传）
 		config: {
@@ -62,7 +62,7 @@ const state = reactive<TableDemoState>({
 		search: [
 			{
         label: '选择月份',
-        prop: 'month',
+        prop: 'time',
         placeholder: '请选择月份',
         required: false,
         type: 'select',
@@ -74,19 +74,30 @@ const state = reactive<TableDemoState>({
             { label: '2023-05', value: '2024-05' },
         ]
       },
-			{ label: '详细地址', prop: 'address', placeholder: '请输入详细地址', required: false, type: 'input' },
-			{ label: '开放时间', prop: 'time', placeholder: '请选择', required: false, type: 'date' },
-			{
-				label: '收/支',
-				prop: 'isSupport',
-				placeholder: '请选择',
-				required: false,
-				type: 'select',
-				options: [
-					{ label: '是', value: 1 },
-					{ label: '否', value: 0 },
-				],
-			},
+      {
+        label: '收/支',
+        prop: 'expenditure_income',
+        placeholder: '请选择',
+        required: false,
+        type: 'select',
+        options: [
+          { label: '收入', value: '收入' },
+          { label: '支出', value: '支出' },
+        ],
+      },
+      {
+        label: '支付方式',
+        prop: 'pay_method',
+        placeholder: '请选择',
+        required: false,
+        type: 'select',
+        options: [
+          { label: '民生银行储蓄卡(4827)', value: '民生银行储蓄卡' },
+          { label: '零钱', value: '零钱' },
+          { label: '支付宝', value: '支付宝' },
+        ],
+      },
+			{ label: '日期', prop: 'time', placeholder: '请选择', required: false, type: 'date' },
 		],
 		// 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
 		param: {
@@ -104,17 +115,25 @@ const getTableData = (params?: EmptyObjectType) => {
   state.tableData.config.loading = true;
   state.tableData.data = [];
 
-  getAdminTable(params)
+  function removeEmptyProperties(obj) {
+    for (const key in obj) {
+      if (obj[key] === '') {
+        delete obj[key];
+      }
+    }
+    return obj;
+  }
+  let newParams = removeEmptyProperties(params)
+  getAdminTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
+
         const formattedData = res.map(item => ({
           ...item,
           amount: verifyNumberRMB(item.amount)
         }));
-        console.log(formattedData)
         state.tableData.data = formattedData;
         state.tableData.config.total = formattedData.length;
-        console.log(formattedData);
       })
       .catch((err) => {
         console.error('Error fetching data: ', err);
@@ -127,8 +146,8 @@ const getTableData = (params?: EmptyObjectType) => {
 };
 
 // 搜索点击时表单回调
-const onSearch = () => {
-	getTableData(state.tableData.search)
+const onSearch = (a) => {
+	getTableData(a)
   tableRef.value.pageReset();
 };
 // 删除当前项回调
@@ -140,7 +159,7 @@ const onTableDelRow = (row: EmptyObjectType) => {
 const onTablePageChange = (page: TableDemoPageType) => {
 	state.tableData.param.pageNum = page.pageNum;
 	state.tableData.param.pageSize = page.pageSize;
-	getTableData();
+	// getTableData();
 };
 // 拖动显示列排序回调
 const onSortHeader = (data: TableHeaderType[]) => {
