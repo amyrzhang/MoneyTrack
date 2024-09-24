@@ -59,8 +59,8 @@
       <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16" class="home-media">
         <el-table :data="state.tableData" border style="width: 100%">
           <el-table-column prop="商品" label="商品" width="380"></el-table-column>
-          <el-table-column prop="金额" label="金额" width="180"></el-table-column>
-          <el-table-column prop="cdf" label="累积占比"></el-table-column>
+          <el-table-column prop="金额" label="金额" align="right" width="180"></el-table-column>
+          <el-table-column prop="cdf" label="累积占比" align="right"></el-table-column>
         </el-table>
       </el-col>
     </el-row>
@@ -462,7 +462,6 @@ const initTableData = () => {
     state.tableData = res;
     console.log(res);
   });
-
 };
 // 批量设置 echarts resize
 const initEchartsResizeFun = () => {
