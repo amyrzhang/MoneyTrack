@@ -4,8 +4,6 @@
 			<TableSearch
           :search="state.tableData.search"
           @search="onSearch"
-          :options="state.tableData.search[0].options"
-          v-model:month="state.tableData.param.month"
       />
 			<Table
 				ref="tableRef"
@@ -60,20 +58,7 @@ const state = reactive<TableDemoState>({
 		},
 		// 搜索表单，动态生成（传空数组时，将不显示搜索，注意格式）
 		search: [
-			{
-        label: '选择月份',
-        prop: 'time',
-        placeholder: '请选择月份',
-        required: false,
-        type: 'select',
-        options: [
-            { label: '2024-09', value: '2024-09' },
-            { label: '2024-08', value: '2024-08' },
-            { label: '2024-07', value: '2024-07' },
-            { label: '2023-06', value: '2024-06' },
-            { label: '2023-05', value: '2024-05' },
-        ]
-      },
+      { label: '日期', prop: 'time', placeholder: '请选择', required: false, type: 'date' },
       {
         label: '收/支',
         prop: 'expenditure_income',
@@ -83,6 +68,7 @@ const state = reactive<TableDemoState>({
         options: [
           { label: '收入', value: '收入' },
           { label: '支出', value: '支出' },
+          { label: '不计收支', value: '不计收支' },
         ],
       },
       {
@@ -97,7 +83,6 @@ const state = reactive<TableDemoState>({
           { label: '支付宝', value: '支付宝' },
         ],
       },
-			{ label: '日期', prop: 'time', placeholder: '请选择', required: false, type: 'date' },
 		],
 		// 搜索参数（不用传，用于分页、搜索时传给后台的值，`getTableData` 中使用）
 		param: {
@@ -127,7 +112,6 @@ const getTableData = (params?: EmptyObjectType) => {
   getAdminTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
-
         const formattedData = res.map(item => ({
           ...item,
           amount: verifyNumberRMB(item.amount)

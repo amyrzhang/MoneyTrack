@@ -24,7 +24,7 @@
                         v-if="val.type === 'input'" style="width: 100%"/>
               <el-date-picker
                   v-model="state.form[val.prop]"
-                  type="date"
+                  type="month"
                   :placeholder="val.placeholder"
                   v-else-if="val.type === 'date'"
                   style="width: 100%"
