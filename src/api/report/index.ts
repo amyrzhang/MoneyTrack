@@ -33,13 +33,12 @@ export function useReportApi() {
                 params
             })
         },
-        getTestMenu: (params?: object) => {
+        getAdminTop10: (params?: object) => {
             return request({
-                url: 'http://localhost:5000/api/report',
+                url: '/api/report/top10',
                 method: 'get',
-                params,
-            });
+                params
+            })
         },
-
     };
 }

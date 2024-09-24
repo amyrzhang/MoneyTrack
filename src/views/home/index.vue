@@ -26,12 +26,12 @@
       </el-col>
     </el-row>
     <el-row :gutter="15" class="home-card-two mb15">
-      <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16">
+      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="home-card-item">
           <div style="height: 100%" ref="homeLineRef"></div>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8" class="home-media">
+      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="home-media">
         <div class="home-card-item">
           <div style="height: 100%" ref="homePieRef"></div>
         </div>
@@ -57,9 +57,11 @@
         </div>
       </el-col>
       <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16" class="home-media">
-        <div class="home-card-item">
-          <div style="height: 100%" ref="homeBarRef"></div>
-        </div>
+        <el-table :data="state.tableData" border style="width: 100%">
+          <el-table-column prop="商品" label="商品" width="380"></el-table-column>
+          <el-table-column prop="金额" label="金额" width="180"></el-table-column>
+          <el-table-column prop="cdf" label="累积占比"></el-table-column>
+        </el-table>
       </el-col>
     </el-row>
   </div>
@@ -175,6 +177,7 @@ const state = reactive({
       iconColor: '#FBD4A0',
     },
   ],
+  tableData: [],
   myCharts: [] as EmptyArrayType,
   charts: {
     theme: '',
@@ -201,7 +204,6 @@ const initCard = () => {
 const initLineChart = () => {
   if (!state.global.dispose.some((b: any) => b === state.global.homeChartOne)) state.global.homeChartOne.dispose();
   state.global.homeChartOne = markRaw(echarts.init(homeLineRef.value, state.charts.theme));
-
   const { getAdminAccount } = useReportApi();
   getAdminAccount()
       .then((res) => {
@@ -210,17 +212,16 @@ const initLineChart = () => {
       .catch((err) => {
         console.error('Error fetching data: ', err);
       })
-
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
       text: '政策补贴额度',
       x: 'left',
-      textStyle: { fontSize: '15', color: state.charts.color },
+      textStyle: {fontSize: '15', color: state.charts.color},
     },
-    grid: { top: 70, right: 20, bottom: 30, left: 30 },
-    tooltip: { trigger: 'axis' },
-    legend: { data: ['预购队列', '最新成交价'], right: 0 },
+    grid: {top: 70, right: 20, bottom: 30, left: 30},
+    tooltip: {trigger: 'axis'},
+    legend: {data: ['预购队列', '最新成交价'], right: 0},
     xAxis: {
       data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     },
@@ -228,7 +229,7 @@ const initLineChart = () => {
       {
         type: 'value',
         name: '价格',
-        splitLine: { show: true, lineStyle: { type: 'dashed', color: '#f5f5f5' } },
+        splitLine: {show: true, lineStyle: {type: 'dashed', color: '#f5f5f5'}},
       },
     ],
     series: [
@@ -239,12 +240,12 @@ const initLineChart = () => {
         symbol: 'circle',
         smooth: true,
         data: [0, 41.1, 30.4, 65.1, 53.3, 53.3, 53.3, 41.1, 30.4, 65.1, 53.3, 10],
-        lineStyle: { color: '#fe9a8b' },
-        itemStyle: { color: '#fe9a8b', borderColor: '#fe9a8b' },
+        lineStyle: {color: '#fe9a8b'},
+        itemStyle: {color: '#fe9a8b', borderColor: '#fe9a8b'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#fe9a8bb3' },
-            { offset: 1, color: '#fe9a8b03' },
+            {offset: 0, color: '#fe9a8bb3'},
+            {offset: 1, color: '#fe9a8b03'},
           ]),
         },
       },
@@ -255,12 +256,12 @@ const initLineChart = () => {
         symbol: 'circle',
         smooth: true,
         data: [0, 24.1, 7.2, 15.5, 42.4, 42.4, 42.4, 24.1, 7.2, 15.5, 42.4, 0],
-        lineStyle: { color: '#9E87FF' },
-        itemStyle: { color: '#9E87FF', borderColor: '#9E87FF' },
+        lineStyle: {color: '#9E87FF'},
+        itemStyle: {color: '#9E87FF', borderColor: '#9E87FF'},
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#9E87FFb3' },
-            { offset: 1, color: '#9E87FF03' },
+            {offset: 0, color: '#9E87FFb3'},
+            {offset: 1, color: '#9E87FF03'},
           ]),
         },
         emphasis: {
@@ -271,12 +272,12 @@ const initLineChart = () => {
               y: 0.5,
               r: 0.5,
               colorStops: [
-                { offset: 0, color: '#9E87FF' },
-                { offset: 0.4, color: '#9E87FF' },
-                { offset: 0.5, color: '#fff' },
-                { offset: 0.7, color: '#fff' },
-                { offset: 0.8, color: '#fff' },
-                { offset: 1, color: '#fff' },
+                {offset: 0, color: '#9E87FF'},
+                {offset: 0.4, color: '#9E87FF'},
+                {offset: 0.5, color: '#fff'},
+                {offset: 0.7, color: '#fff'},
+                {offset: 0.8, color: '#fff'},
+                {offset: 1, color: '#fff'},
               ],
             },
             borderColor: '#9E87FF',
@@ -300,6 +301,11 @@ const initPieChart = () => {
       data.push({name: key, value: res[key]});
     }
     const option = {
+      title: {
+        text: '消费类别分布',
+        x: 'left',
+        textStyle: { fontSize: '15', color: state.charts.color },
+      },
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -359,7 +365,7 @@ const initBarChart = () => {
   const option = {
     backgroundColor: state.charts.bgColor,
     title: {
-      text: '地热开发利用',
+      text: '月度支出排行',
       x: 'left',
       textStyle: { fontSize: '15', color: state.charts.color },
     },
@@ -376,7 +382,7 @@ const initBarChart = () => {
     ],
     yAxis: [
       {
-        name: '供回温度(℃）',
+        name: '累计密度(%)',
         nameLocation: 'middle',
         nameTextStyle: { padding: [3, 4, 50, 6] },
         splitLine: { show: true, lineStyle: { type: 'dashed', color: '#f5f5f5' } },
@@ -385,7 +391,7 @@ const initBarChart = () => {
         axisLabel: { color: state.charts.color, formatter: '{value} ' },
       },
       {
-        name: '压力值(Mpa)',
+        name: '金额(￥)',
         nameLocation: 'middle',
         nameTextStyle: { padding: [50, 4, 5, 6] },
         splitLine: { show: false },
@@ -396,7 +402,7 @@ const initBarChart = () => {
     ],
     series: [
       {
-        name: '供温',
+        name: '累计密度(%)',
         type: 'line',
         smooth: true,
         showSymbol: true,
@@ -415,49 +421,16 @@ const initBarChart = () => {
         itemStyle: { color: '#FF8000' },
         // data中可以使用对象，value代表相应的值，另外可加入自定义的属性
         data: [
-          { value: 1, stationName: 's1' },
-          { value: 3, stationName: 's2' },
-          { value: 4, stationName: 's3' },
-          { value: 9, stationName: 's4' },
-          { value: 3, stationName: 's5' },
-          { value: 2, stationName: 's6' },
+          { value: 17.2, stationName: 's1' },
+          { value: 31.96, stationName: 's2' },
+          { value: 44.36, stationName: 's3' },
+          { value: 49.07, stationName: 's4' },
+          { value: 53.56, stationName: 's5' },
+          { value: 57.4, stationName: 's6' },
         ],
       },
       {
-        name: '回温',
-        type: 'line',
-        smooth: true,
-        showSymbol: true,
-        symbol: 'emptyCircle',
-        symbolSize: 12,
-        yAxisIndex: 0,
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1,
-              [
-                { offset: 0, color: 'rgba(199, 237, 250,0.5)' },
-                { offset: 1, color: 'rgba(199, 237, 250,0.2)' },
-              ],
-              false
-          ),
-        },
-        itemStyle: {
-          color: '#3bbc86',
-        },
-        data: [
-          { value: 31, stationName: 's1' },
-          { value: 36, stationName: 's2' },
-          { value: 54, stationName: 's3' },
-          { value: 24, stationName: 's4' },
-          { value: 73, stationName: 's5' },
-          { value: 22, stationName: 's6' },
-        ],
-      },
-      {
-        name: '压力值(Mpa)',
+        name: '金额(￥)',
         type: 'bar',
         barWidth: 30,
         yAxisIndex: 1,
@@ -470,18 +443,26 @@ const initBarChart = () => {
           borderRadius: [30, 30, 0, 0],
         },
         data: [
-          { value: 11, stationName: 's1' },
-          { value: 34, stationName: 's2' },
-          { value: 54, stationName: 's3' },
-          { value: 39, stationName: 's4' },
-          { value: 63, stationName: 's5' },
-          { value: 24, stationName: 's6' },
+          { value: 757.0, stationName: 's1' },
+          { value: 650.0, stationName: 's2' },
+          { value: 546.0, stationName: 's3' },
+          { value: 207.0, stationName: 's4' },
+          { value: 197.99, stationName: 's5' },
+          { value: 169.0, stationName: 's6' },
         ],
       },
     ],
   };
   state.global.homeCharThree.setOption(option);
   state.myCharts.push(state.global.homeCharThree);
+};
+const initTableData = () => {
+  const { getAdminTop10 } = useReportApi();
+  getAdminTop10().then((res) => {
+    state.tableData = res;
+    console.log(res);
+  });
+
 };
 // 批量设置 echarts resize
 const initEchartsResizeFun = () => {
@@ -500,6 +481,7 @@ const initEchartsResize = () => {
 // 页面加载时
 onMounted(() => {
   initCard();
+  initTableData();
   initEchartsResize();
 });
 // 由于页面缓存原因，keep-alive
