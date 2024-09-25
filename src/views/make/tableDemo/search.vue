@@ -1,15 +1,6 @@
 <template>
   <div class="table-search-container" v-if="props.search.length > 0">
-    <el-upload
-        class="upload-btn ml10"
-        action="http://localhost:5000/upload"
-        :on-success="handleUploadSuccess"
-        :on-error="handleUploadError"
-    >
-      <el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;">
-        上传
-      </el-button>
-    </el-upload>
+
     <el-form ref="tableSearchRef" :model="state.form" size="default" label-width="100px" class="table-form">
       <el-row>
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20" v-for="(val, key) in search" :key="key"
@@ -49,7 +40,16 @@
 
               <el-button size="default" type="primary" @click="onSearch(tableSearchRef)"> 查询</el-button>
               <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> 重置</el-button>
-
+              <el-upload
+                  class="upload-btn ml10"
+                  action="http://localhost:5000/upload"
+                  :on-success="handleUploadSuccess"
+                  :on-error="handleUploadError"
+              >
+                <el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;">
+                  上传
+                </el-button>
+              </el-upload>
             </div>
           </el-form-item>
         </el-col>
