@@ -29,7 +29,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 			hmr: true,
 			proxy: {
 				'/gitee': {
-					target: 'https://gitee.com',
+					target: 'http://43.134.233.6',
 					ws: true,
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/gitee/, ''),
