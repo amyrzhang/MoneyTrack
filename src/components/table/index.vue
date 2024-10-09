@@ -38,6 +38,7 @@
 			</el-table-column>
 			<el-table-column label="操作" width="100" v-if="config.isOperate">
 				<template v-slot="scope">
+          <el-button text type="primary" @click="onOpenEditDept('edit', scope.row)">修改</el-button>
 					<el-popconfirm title="确定删除吗？" @confirm="onDelRow(scope.row)">
 						<template #reference>
 							<el-button text type="primary">删除</el-button>
