@@ -29,31 +29,29 @@
           </template>
         </el-col>
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb20">
-          <el-form-item class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
+          <el-form-item style="width: 700px" class="table-form-btn" :label-width="search.length <= 1 ? '10px' : '100px'">
             <template #label v-if="search.length > 1">
               <div class="table-form-btn-toggle ml10" @click="state.isToggle = !state.isToggle">
                 <span>{{ state.isToggle ? '收筛选' : '展筛选' }}</span>
                 <SvgIcon :name="state.isToggle ? 'ele-ArrowUp' : 'ele-ArrowDown'"/>
               </div>
             </template>
-            <div>
-
+            <div >
               <el-button size="default" type="primary" @click="onSearch(tableSearchRef)"> 查询</el-button>
               <el-button size="default" type="info" class="ml10" @click="onReset(tableSearchRef)"> 重置</el-button>
               <el-upload
+                  style="display: inline-block"
                   class="upload-btn ml10"
                   action="http://localhost:5000/upload"
                   :on-success="handleUploadSuccess"
                   :on-error="handleUploadError"
               >
-                <el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;">
-                  上传
-                </el-button>
+                <el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;"> 上传</el-button>
               </el-upload>
             </div>
           </el-form-item>
-        </el-col>
 
+        </el-col>
       </el-row>
     </el-form>
   </div>
