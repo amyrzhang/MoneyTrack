@@ -42,7 +42,7 @@
               <el-upload
                   style="display: inline-block"
                   class="upload-btn ml10"
-                  action="http://localhost:5000/upload"
+                  action="http://localhost:18080/upload"
                   :on-success="handleUploadSuccess"
                   :on-error="handleUploadError"
               >
