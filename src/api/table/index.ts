@@ -12,11 +12,18 @@ import request from '/@/utils/request';
  */
 export function useTableApi() {
     return {
-        getAdminTable: (params?: object) => {
+        getTable: (params?: object) => {
             return request({
                 url: '/api/data',
                 method: 'get',
                 params,
+            });
+        },
+        updateRecord:(data) => {
+            return request({
+                url: '/api/data/updateRecord',
+                method: 'post',
+                data
             });
         },
         getTestMenu: (params?: object) => {

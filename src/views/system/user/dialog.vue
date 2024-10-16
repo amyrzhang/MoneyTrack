@@ -66,6 +66,7 @@
 
 <script setup lang="ts" name="systemUserDialog">
 import { reactive, ref } from 'vue';
+import {useMenuApi} from "/@/api/menu";
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -118,8 +119,11 @@ const onCancel = () => {
 };
 // 提交
 const onSubmit = () => {
-	closeDialog();
-	emit('refresh');
+  const data = state.ruleForm;
+  useMenuApi().updateRecord(data).then(res => {
+    closeDialog();
+    emit('refresh');
+  })
 	// if (state.dialog.type === 'add') { }
 };
 

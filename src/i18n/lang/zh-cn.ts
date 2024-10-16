@@ -4,7 +4,7 @@ export default {
 		home: '首页',
 		system: '系统设置',
 		systemMenu: '菜单管理',
-		systemUser: '用户管理',
+		systemUser: '账单管理',
 		systemDept: '部门管理',
 		systemDic: '字典管理',
 		makeIndex: '财务报表',

@@ -84,7 +84,7 @@ const state = reactive<SysUserState>({
 
 // 初始化表格数据
 const getTableData = (params?: EmptyObjectType) => {
-  const { getAdminTable } = useTableApi();
+  const { getTable } = useTableApi();
 	state.tableData.loading = true;
   state.tableData.data = [];
   function removeEmptyProperties(obj) {
@@ -96,7 +96,7 @@ const getTableData = (params?: EmptyObjectType) => {
     return obj;
   }
   let newParams = removeEmptyProperties(params)
-  getAdminTable(newParams)
+  getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
         const formattedData = res.map(item => ({

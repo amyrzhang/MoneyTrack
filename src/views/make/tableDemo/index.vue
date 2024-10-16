@@ -105,7 +105,7 @@ const state = reactive<TableDemoState>({
 
 // 初始化列表数据
 const getTableData = (params?: EmptyObjectType) => {
-  const { getAdminTable } = useTableApi(); // 获取 API 数据
+  const { getTable } = useTableApi(); // 获取 API 数据
   state.tableData.config.loading = true;
   state.tableData.data = [];
 
@@ -118,7 +118,7 @@ const getTableData = (params?: EmptyObjectType) => {
     return obj;
   }
   let newParams = removeEmptyProperties(params)
-  getAdminTable(newParams)
+  getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
         const formattedData = res.map(item => ({
