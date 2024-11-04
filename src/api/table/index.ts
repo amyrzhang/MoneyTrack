@@ -21,7 +21,7 @@ export function useTableApi() {
         },
         updateRecord:(data) => {
             return request({
-                url: '/api/data/updateRecord',
+                url: '/transactions',
                 method: 'post',
                 data
             });
