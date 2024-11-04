@@ -14,7 +14,7 @@ export function useTableApi() {
     return {
         getTable: (params?: object) => {
             return request({
-                url: '/api/data',
+                url: '/transactions',
                 method: 'get',
                 params,
             });
