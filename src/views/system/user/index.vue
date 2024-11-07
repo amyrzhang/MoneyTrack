@@ -2,7 +2,7 @@
 	<div class="system-user-container layout-padding">
 		<el-card shadow="hover" class="layout-padding-auto">
 			<div class="system-user-search mb15">
-				<el-input size="default" placeholder="请输入商品名称" style="max-width: 180px"> </el-input>
+				<el-input size="default" placeholder="请输入收入/支出" style="max-width: 180px"> </el-input>
 				<el-button size="default" type="primary" class="ml10">
 					<el-icon>
 						<ele-Search />
