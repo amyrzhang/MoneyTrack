@@ -15,10 +15,20 @@
 					</el-icon>
 					新增用户
 				</el-button>
+				<!-- TODO: 改为读环境变量，动态获取             -->
+				<el-upload
+					style="display: inline-block"
+					class="upload-btn ml10"
+					action="uploadUrl"
+					:on-success="handleUploadSuccess"
+					:on-error="handleUploadError"
+				>
+					<el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;"> 上传文件</el-button>
+				</el-upload>
 			</div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="time" label="交易时间" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="time" label="交易时间" width="200" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="source" label="来源" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="expenditure_income" label="收/支" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="category" label="类别" show-overflow-tooltip></el-table-column>
@@ -136,6 +146,26 @@ const onRowDel = (row: RowUserType) => {
 			ElMessage.success('删除成功');
 		})
 		.catch(() => {});
+};
+// 上传
+const uploadUrl = ref<string>('');
+const getUploadUrl= async () => {
+	try {
+		const response = await service.get('/upload'); // 假设有一个接口返回上传 URL
+		uploadUrl.value = response.data.url;
+	} catch (error) {
+		console.error('获取上传 URL 失败:', error);
+	}
+};
+const handleUploadSuccess = (response: any, file: any) => {
+	console.log(response);
+};
+const handleUploadError = (err: any, file: any) => {
+	console.log(err);
+	if (err.response.status === 409) {
+		errorMessage = '文件已存在';
+	}
+	this.$message.error(errorMessage);
 };
 // 分页改变
 const onHandleSizeChange = (val: number) => {
