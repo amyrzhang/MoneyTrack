@@ -283,7 +283,7 @@ declare type WorkflowDrawerState<T = any> = {
 };
 
 /**
- * views make
+ * views assets
  */
 // tableDemo
 declare type TableDemoPageType = {

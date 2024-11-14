@@ -65,7 +65,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			{
 				path: '/assets',
 				name: 'assets',
-				component: () => import('/src/views/make/index.vue'),
+				component: () => import('/src/views/assets/index.vue'),
 				meta: {
 					title: 'message.router.assets',
 					isLink: '',
