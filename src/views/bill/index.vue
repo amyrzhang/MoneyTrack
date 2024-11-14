@@ -62,11 +62,11 @@
 <script setup lang="ts" name="systemUser">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { useTableApi } from "/@/api/table";
-import {verifyNumberRMB} from "/@/utils/toolsValidate";
+import { useTableApi } from "/src/api/table";
+import {verifyNumberRMB} from "/src/utils/toolsValidate";
 
 // 引入组件
-const UserDialog = defineAsyncComponent(() => import('/@/views/system/user/dialog.vue'));
+const UserDialog = defineAsyncComponent(() => import('/src/views/bill/dialog.vue'));
 
 // 定义变量内容
 const userDialogRef = ref();

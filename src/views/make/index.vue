@@ -26,10 +26,10 @@
 
 <script setup lang="ts" name="makeSelector">
 import {defineAsyncComponent, reactive, ref} from 'vue';
-import { useReportApi } from '/@/api/report';
+import { useReportApi } from '/src/api/report';
 
 // 引入组件
-const IconSelector = defineAsyncComponent(() => import('/@/components/iconSelector/index.vue'));
+const IconSelector = defineAsyncComponent(() => import('/src/components/iconSelector/index.vue'));
 
 // 定义变量内容
 const state = reactive({
