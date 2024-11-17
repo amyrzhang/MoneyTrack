@@ -459,8 +459,8 @@ const initBarChart = () => {
 const initTableData = () => {
   const { getAdminTop10 } = useReportApi();
   getAdminTop10().then((res) => {
+		console.log(res);
     state.tableData = res;
-    console.log(res);
   });
 };
 // 批量设置 echarts resize
