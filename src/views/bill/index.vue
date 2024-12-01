@@ -19,7 +19,7 @@
 				<el-upload
 					style="display: inline-block"
 					class="upload-btn ml10"
-					action="uploadUrl"
+					action="http://43.134.233.6:18080/upload"
 					:on-success="handleUploadSuccess"
 					:on-error="handleUploadError"
 				>
@@ -146,16 +146,6 @@ const onRowDel = (row: RowUserType) => {
 			ElMessage.success('删除成功');
 		})
 		.catch(() => {});
-};
-// 上传
-const uploadUrl = ref<string>('');
-const getUploadUrl= async () => {
-	try {
-		const response = await service.get('/upload'); // 假设有一个接口返回上传 URL
-		uploadUrl.value = response.data.url;
-	} catch (error) {
-		console.error('获取上传 URL 失败:', error);
-	}
 };
 const handleUploadSuccess = (response: any, file: any) => {
 	console.log(response);
