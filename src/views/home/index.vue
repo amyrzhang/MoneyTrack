@@ -27,41 +27,16 @@
     </el-row>
     <el-row :gutter="15" class="home-card-two mb15">
       <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-        <div class="home-card-item">
-          <div style="height: 100%" ref="homeLineRef"></div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="home-media">
-        <div class="home-card-item">
-          <div style="height: 100%" ref="homePieRef"></div>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="15" class="home-card-three">
-      <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="8">
-        <div class="home-card-item">
-          <div class="home-card-item-title">快捷导航工具</div>
-          <div class="home-monitor">
-            <div class="flex-warp">
-              <div class="flex-warp-item" v-for="(v, k) in state.homeThree" :key="k">
-                <div class="flex-warp-item-box" :class="`home-animation${k}`">
-                  <div class="flex-margin">
-                    <i :class="v.icon" :style="{ color: v.iconColor }"></i>
-                    <span class="pl5">{{ v.label }}</span>
-                    <div class="mt10">{{ v.value }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="14" :md="14" :lg="16" :xl="16" class="home-media">
         <el-table :data="state.tableData" stripe border style="width: 100%">
           <el-table-column prop="goods" label="商品" width="380"></el-table-column>
           <el-table-column prop="amount" label="金额" align="right" width="180"></el-table-column>
           <el-table-column prop="cdf" label="累积占比" align="right"></el-table-column>
         </el-table>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="home-media">
+        <div class="home-card-item">
+          <div style="height: 100%" ref="homePieRef"></div>
+        </div>
       </el-col>
     </el-row>
   </div>
