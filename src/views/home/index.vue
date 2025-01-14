@@ -48,7 +48,6 @@ import * as echarts from 'echarts';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
-import { useTableApi } from "/@/api/table";
 import { useReportApi } from "/@/api/report";
 import { verifyNumberRMB } from '/@/utils/toolsValidate'
 
@@ -71,7 +70,7 @@ const state = reactive({
     {
       num1: '',
       num2: '-12.32',
-      num3: '月度支出',
+      num3: '月度结余',
       num4: 'fa fa-meetup',
       color1: '#FF6462',
       color2: '--next-color-primary-lighter',
@@ -89,7 +88,7 @@ const state = reactive({
     {
       num1: '',
       num2: '+17.32',
-      num3: '月度结余',
+      num3: '月度支出',
       num4: 'iconfont icon-zaosheng',
       color1: '#6690F9',
       color2: '--next-color-warning-lighter',
@@ -166,9 +165,9 @@ const initCard = () => {
   const { getAdminReport } = useReportApi(); // 获取 API 数据
   getAdminReport()
       .then((res) => {
-        state.homeOne[0].num1 = verifyNumberRMB(res['expenditure']);
+        state.homeOne[0].num1 = verifyNumberRMB(res['balance']);
         state.homeOne[1].num1 = verifyNumberRMB(res['income']);
-        state.homeOne[2].num1 = verifyNumberRMB(res['balance']);
+        state.homeOne[2].num1 = verifyNumberRMB(res['expenditure']);
       })
       .catch((err) => {
         console.error('Error fetching data data: ', err);
