@@ -21,7 +21,7 @@ export function useReportApi() {
         },
         getAdminCategory: (params?: object) => {
             return request({
-                url: '/api/report/category',
+                url: '/report/category',
                 method: 'get',
                 params,
             });
@@ -35,7 +35,7 @@ export function useReportApi() {
         },
         getAdminTop10: (params?: object) => {
             return request({
-                url: '/api/report/top10',
+                url: '/report/top10',
                 method: 'get',
                 params
             })
