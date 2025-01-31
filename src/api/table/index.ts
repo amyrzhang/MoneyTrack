@@ -26,9 +26,16 @@ export function useTableApi() {
                 data
             });
         },
-        getTestMenu: (params?: object) => {
+        getAccountBalance: (params?: object) => {
             return request({
-                url: '/api/data',
+                url: '/account/balance',
+                method: 'get',
+                params,
+            });
+        },
+        getAccountActivity: (params?: object) => {
+            return request({
+                url: '/account/activity',
                 method: 'get',
                 params,
             });

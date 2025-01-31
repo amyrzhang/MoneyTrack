@@ -27,21 +27,13 @@
 				</el-upload>
 			</div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
-				<el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="time" label="交易时间" width="200" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="source" label="来源" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="expenditure_income" label="收/支" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="category" label="类别" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="counterparty" label="交易对方" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="goods" label="商品" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="reversed" label="是否冲账" show-overflow-tooltip>
-					<template #default="scope">
-						<el-tag type="success" v-if="scope.row.status">冲账</el-tag>
-						<el-tag type="info" v-else>不冲账</el-tag>
-					</template>
-				</el-table-column>
+				<el-table-column type="index" label="序号" />
+        <el-table-column prop="time" label="交易时间" min-width="150" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="debit_credit" label="收/支" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="counterparty" label="交易对方" min-width="100" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="goods" label="商品" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="amount" label="金额" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="pay_method" label="支付方式" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="payment_method" label="支付方式" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
 						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)"

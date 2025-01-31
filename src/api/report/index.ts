@@ -12,28 +12,21 @@ import request from '/@/utils/request';
  */
 export function useReportApi() {
     return {
-        getAdminReport: (params?: object) => {
+        getReport: (params?: object) => {
             return request({
-                url: '/api/report',
+                url: '/report',
                 method: 'get',
                 params,
             });
         },
-        getAdminCategory: (params?: object) => {
+        getExpCategory: (params?: object) => {
             return request({
                 url: '/report/category',
                 method: 'get',
                 params,
             });
         },
-        getAdminAccount: (params?: object) => {
-            return request({
-                url: '/api/report/account',
-                method: 'get',
-                params
-            })
-        },
-        getAdminTop10: (params?: object) => {
+        getExpTop10: (params?: object) => {
             return request({
                 url: '/report/top10',
                 method: 'get',

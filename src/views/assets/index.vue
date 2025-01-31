@@ -1,11 +1,12 @@
 <template>
 	<div class="selector-container layout-pd">
-		<el-card shadow="hover" header="月度对账单" class="mt15">
-			<el-table :data="state.tableData" show-summary style="width: 100%">
-				<el-table-column prop="支付方式" label="资产账户"> </el-table-column>
-				<el-table-column prop="支出" label="支出(￥)" align="right"> </el-table-column>
-				<el-table-column prop="收入" label="收入(￥)" align="right"> </el-table-column>
-        <el-table-column prop="不计收支" label="不计收支(￥)" align="right"> </el-table-column>
+		<el-card shadow="hover" header="资产概览" class="mt15">
+			<el-table :data="state.tableData" style="width: 100%">
+				<el-table-column prop="account_name" label="资产账户"> </el-table-column>
+				<el-table-column prop="account_type" label="账户类型" align="right"> </el-table-column>
+				<el-table-column prop="balance" label="余额(￥)" align="right"> </el-table-column>
+				<el-table-column prop="credit" label="流入(￥)" align="right"> </el-table-column>
+				<el-table-column prop="debit" label="流出(￥)" align="right"> </el-table-column>
 			</el-table>
 		</el-card>
 	</div>
@@ -13,7 +14,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive } from 'vue';
-import { useReportApi } from '/src/api/report';
+import { useTableApi } from '/src/api/table';
 
 // 定义变量内容
 const state = reactive({
@@ -21,8 +22,8 @@ const state = reactive({
 });
 
 const initTableData = async () => {
-  const { getAdminAccount } = useReportApi();
-  getAdminAccount().then((res) => {
+  const { getAccountBalance } = useTableApi();
+  getAccountBalance().then((res) => {
     state.tableData = res;
 	});
 };
