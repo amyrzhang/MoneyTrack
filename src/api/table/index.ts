@@ -33,6 +33,13 @@ export function useTableApi() {
                 params,
             });
         },
+        getMonthlyBalance: (params?: object) => {
+            return request({
+                url: '/monthly/balance',
+                method: 'get',
+                params,
+            });
+        },
         getAccountActivity: (params?: object) => {
             return request({
                 url: '/account/activity',
