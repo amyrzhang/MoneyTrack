@@ -10,7 +10,7 @@
 				<el-table-column prop="debit" label="流出(￥)" align="right"> </el-table-column>
 			</el-table>
 		</el-card>
-		<el-card shadow="hover" header="年度账单" class="mt15">
+		<el-card shadow="hover" header="月度账单" class="mt15">
 			<el-table :data="state.billData" style="width: 100%">
 				<el-table-column prop="month" label="月份"> </el-table-column>
 				<el-table-column prop="balance" label="余额(￥)" align="right"> </el-table-column>
