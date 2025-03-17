@@ -33,5 +33,26 @@ export function useReportApi() {
                 params
             })
         },
+        getMonthlyBalance: (params?: object) => {
+            return request({
+                url: '/monthly/balance',
+                method: 'get',
+                params,
+            });
+        },
+        getQuarterlyBalance: (params?: object) => {
+            return request({
+                url: '/quarterly/balance',
+                method: 'get',
+                params,
+            });
+        },
+        getAnnualBalance: (params?: object) => {
+            return request({
+                url: '/annual/balance',
+                method: 'get',
+                params,
+            });
+        },
     };
 }

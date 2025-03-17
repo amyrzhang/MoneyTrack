@@ -65,7 +65,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			{
 				path: '/assets',
 				name: 'assets',
-				component: () => import('/src/views/assets/index.vue'),
+				component: () => import('/@/views/assets/index.vue'),
 				meta: {
 					title: 'message.router.assets',
 					isLink: '',
@@ -78,9 +78,24 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 			},
 			{
+				path: '/report',
+				name: 'report',
+				component: () => import('/@/views/report/index.vue'),
+				meta: {
+					title: 'message.router.report',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin', 'common'],
+					icon: 'iconfont icon-xuanzeqi',
+				},
+			},
+			{
 				path: '/bill',
 				name: 'bill',
-				component: () => import('/src/views/bill/index.vue'),
+				component: () => import('/@/views/bill/index.vue'),
 				meta: {
 					title: 'message.router.bill',
 					isLink: '',

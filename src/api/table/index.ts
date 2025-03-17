@@ -19,23 +19,16 @@ export function useTableApi() {
                 params,
             });
         },
-        updateRecord:(data) => {
+        updateRecord:(params?: object) => {
             return request({
                 url: '/transactions',
                 method: 'post',
-                data
+                params
             });
         },
         getAccountBalance: (params?: object) => {
             return request({
                 url: '/account/balance',
-                method: 'get',
-                params,
-            });
-        },
-        getMonthlyBalance: (params?: object) => {
-            return request({
-                url: '/monthly/balance',
                 method: 'get',
                 params,
             });

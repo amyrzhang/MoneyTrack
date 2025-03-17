@@ -4,6 +4,7 @@ export default {
 		home: '首页',
 		bill: '账单管理',
 		assets: '资产管理',
+		report: '报表管理',
 		personal: '个人中心',
 	},
 	staticRoutes: {
