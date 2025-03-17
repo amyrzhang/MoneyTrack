@@ -78,6 +78,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 			},
 			{
+				path: '/report',
+				name: 'report',
+				component: () => import('/src/views/report/index.vue'),
+				meta: {
+					title: 'message.router.report',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin', 'common'],
+					icon: 'iconfont icon-xuanzeqi',
+				},
+			},
+			{
 				path: '/bill',
 				name: 'bill',
 				component: () => import('/src/views/bill/index.vue'),
