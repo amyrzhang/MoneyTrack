@@ -24,9 +24,12 @@ const state = reactive({
 
 const initTableData = async () => {
   const { getAccountBalance } = useTableApi();
-  getAccountBalance().then((res) => {
+  try {
+    const res = await getAccountBalance();
     state.tableData = res;
-	});
+  } catch (error) {
+    console.error('Failed to fetch account balance:', error);
+  }
 };
 
 initTableData();
