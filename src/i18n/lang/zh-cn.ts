@@ -5,6 +5,8 @@ export default {
 		bill: '账单管理',
 		assets: '资产管理',
 		report: '报表管理',
+		reportMonthly: '月度统计',
+		reportAnnual: '年度统计',
 		personal: '个人中心',
 	},
 	staticRoutes: {

@@ -80,7 +80,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			{
 				path: '/report',
 				name: 'report',
-				component: () => import('/@/views/report/index.vue'),
+				component: () => import('/@/layout/routerView/parent.vue'),
 				meta: {
 					title: 'message.router.report',
 					isLink: '',
@@ -91,6 +91,36 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					roles: ['admin', 'common'],
 					icon: 'iconfont icon-xuanzeqi',
 				},
+				children: [
+					{
+						path: '/report/monthly',
+						name: 'monthly',
+						component: () => import('/@/views/report/monthly/index.vue'),
+						meta: {
+							title: 'message.router.reportMonthly',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin', 'common'],
+						}
+					},
+					{
+						path: '/report/annual',
+						name: 'annual',
+						component: () => import('/@/views/report/annual/index.vue'),
+						meta: {
+							title: 'message.router.reportAnnual',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin', 'common'],
+						}
+					}
+				]
 			},
 			{
 				path: '/bill',
