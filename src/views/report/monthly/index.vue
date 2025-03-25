@@ -1,5 +1,5 @@
 <template>
-	<div class="selector-container layout-pd">
+ b  	<div class="selector-container layout-pd">
     <el-card shadow="hover" header="月度账单" class="mt15">
       <el-table :data="state.tableData" style="width: 100%">
         <el-table-column prop="month" label="月份"> </el-table-column>
@@ -19,7 +19,7 @@ import { useReportApi } from '/@/api/report';
 
 // 定义变量内容
 const state = reactive({
-  tableData: Array<{ month: string; balance: number; income: number; expenditure: number; credit: number; debit: number }>
+	tableData: [],
 });
 
 const initTableData = async () => {
