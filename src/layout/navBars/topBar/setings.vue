@@ -567,14 +567,14 @@ const onAddDarkChange = () => {
 };
 // 4、界面显示 --> 开启水印
 const onWartermarkChange = () => {
-	getThemeConfig.value.isWartermark ? Watermark.set(getThemeConfig.value.wartermarkText) : Watermark.del();
+	// getThemeConfig.value.isWartermark ? Watermark.set(getThemeConfig.value.wartermarkText) : Watermark.del();
 	setLocalThemeConfig();
 };
 // 4、界面显示 --> 水印文案
 const onWartermarkTextInput = (val: string) => {
 	getThemeConfig.value.wartermarkText = verifyAndSpace(val);
 	if (getThemeConfig.value.wartermarkText === '') return false;
-	if (getThemeConfig.value.isWartermark) Watermark.set(getThemeConfig.value.wartermarkText);
+	// if (getThemeConfig.value.isWartermark) Watermark.set(getThemeConfig.value.wartermarkText);
 	setLocalThemeConfig();
 };
 // 5、布局切换

@@ -2,8 +2,14 @@
 	<div class="system-user-container layout-padding">
 		<el-card shadow="hover" class="layout-padding-auto">
 			<div class="system-user-search mb15">
-				<el-input size="default" placeholder="请输入收入/支出" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10">
+				<el-date-picker
+					v-model="value2"
+					type="month"
+					format="YYYY-MM"
+					value-format="YYYY-MM"
+					placeholder="选择月">
+				</el-date-picker>
+				<el-button size="default" type="primary" class="ml10" @click="getTableData">
 					<el-icon>
 						<ele-Search />
 					</el-icon>
@@ -65,13 +71,14 @@
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useTableApi } from "/src/api/table";
-import {verifyNumberRMB} from "/src/utils/toolsValidate";
+import { verifyNumberRMB } from "/src/utils/toolsValidate";
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/src/views/bill/dialog.vue'));
 
 // 定义变量内容
 const userDialogRef = ref();
+const value2 = ref('');
 const state = reactive<SysUserState>({
 	tableData: {
 		data: [],
@@ -89,7 +96,8 @@ const getTableData = (params?: EmptyObjectType) => {
   const { getTable } = useTableApi();
 	state.tableData.loading = true;
   state.tableData.data = [];
-  function removeEmptyProperties(obj) {
+
+	function removeEmptyProperties(obj) {
     for (const key in obj) {
       if (obj[key] === '') {
         delete obj[key];
@@ -97,7 +105,14 @@ const getTableData = (params?: EmptyObjectType) => {
     }
     return obj;
   }
-  let newParams = removeEmptyProperties(params)
+	console.log(value2.value)
+	// 将 value2 的值添加到 params 中
+	const combineParams  = {
+		...params,
+		time: value2.value
+	}
+
+  let newParams = removeEmptyProperties(combineParams)
   getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
@@ -106,7 +121,6 @@ const getTableData = (params?: EmptyObjectType) => {
           amount: verifyNumberRMB(item.amount)
         }));
         state.tableData.data = formattedData;
-        console.log(formattedData);
         state.tableData.total = formattedData.length;
       })
       .catch((err) => {
