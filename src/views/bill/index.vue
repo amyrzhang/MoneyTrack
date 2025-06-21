@@ -15,22 +15,28 @@
 					</el-icon>
 					查询
 				</el-button>
-				<el-button size="default" type="success" class="ml10" @click="onOpenAddUser('add')">
+				<el-button size="default" type="success" class="ml10" @click="onOpenAddRecord('add')">
 					<el-icon>
 						<ele-FolderAdd />
 					</el-icon>
-					新增用户
+					新增记录
 				</el-button>
 				<!-- TODO: 改为读环境变量，动态获取             -->
-				<el-upload
-					style="display: inline-block"
-					class="upload-btn ml10"
-					action="http://43.134.233.6:18080/upload"
-					:on-success="handleUploadSuccess"
-					:on-error="handleUploadError"
-				>
-					<el-button size="default" type="success" style="background-color: #4dbb7e; border-color: #4dbb7e;"> 上传文件</el-button>
-				</el-upload>
+        <el-upload
+            style="display: inline-block"
+            class="upload-btn ml10"
+            action="http://43.134.233.6:18080/upload"
+            :on-success="handleUploadSuccess"
+            :on-error="handleUploadError"
+        >
+          <el-button size="default" type="warning" class="ml10">
+            <el-icon>
+              <UploadFilled />
+            </el-icon>
+            上传文件
+          </el-button>
+        </el-upload>
+
 			</div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" />
@@ -70,11 +76,12 @@
 <script setup lang="ts" name="systemUser">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { useTableApi } from "/src/api/table";
-import { verifyNumberRMB } from "/src/utils/toolsValidate";
+import { useTableApi } from "/@/api/table";
+import { verifyNumberRMB } from "/@/utils/toolsValidate";
+import {UploadFilled} from "@element-plus/icons-vue";
 
 // 引入组件
-const UserDialog = defineAsyncComponent(() => import('/src/views/bill/dialog.vue'));
+const UserDialog = defineAsyncComponent(() => import('/@/views/bill/dialog.vue'));
 
 // 定义变量内容
 const userDialogRef = ref();
@@ -108,11 +115,12 @@ const getTableData = (params?: EmptyObjectType) => {
 	console.log(value2.value)
 	// 将 value2 的值添加到 params 中
 	const combineParams  = {
-		...params,
+		...params,  // ✅ 使用传入的 params（如分页参数）
 		time: value2.value
 	}
 
   let newParams = removeEmptyProperties(combineParams)
+  console.log('newParams:', JSON.stringify(newParams, null, 2));
   getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
@@ -132,11 +140,11 @@ const getTableData = (params?: EmptyObjectType) => {
         }, 500);
       });
 };
-// 打开新增用户弹窗
-const onOpenAddUser = (type: string) => {
+// 打开新增记录弹窗
+const onOpenAddRecord = (type: string) => {
 	userDialogRef.value.openDialog(type);
 };
-// 打开修改用户弹窗
+// 打开修改记录弹窗
 const onOpenEditUser = (type: string, row: RowUserType) => {
 	userDialogRef.value.openDialog(type, row);
 };
@@ -166,16 +174,16 @@ const handleUploadError = (err: any, file: any) => {
 // 分页改变
 const onHandleSizeChange = (val: number) => {
 	state.tableData.param.pageSize = val;
-	getTableData();
+	getTableData(state.tableData.param);
 };
 // 分页改变
 const onHandleCurrentChange = (val: number) => {
 	state.tableData.param.pageNum = val;
-	getTableData();
+	getTableData(state.tableData.param);
 };
 // 页面加载时
 onMounted(() => {
-	getTableData();
+	getTableData(state.tableData.param);
 });
 </script>
 
