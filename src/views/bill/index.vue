@@ -112,10 +112,9 @@ const getTableData = (params?: EmptyObjectType) => {
     }
     return obj;
   }
-	console.log(value2.value)
 	// 将 value2 的值添加到 params 中
 	const combineParams  = {
-		...params,  // ✅ 使用传入的 params（如分页参数）
+		...state.tableData.param,  // 使用传入的 params（如分页参数）
 		time: value2.value
 	}
 
@@ -124,12 +123,12 @@ const getTableData = (params?: EmptyObjectType) => {
   getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
-        const formattedData = res.map(item => ({
+        const formattedData = res.data.map(item => ({
           ...item,
           amount: verifyNumberRMB(item.amount)
         }));
         state.tableData.data = formattedData;
-        state.tableData.total = formattedData.length;
+        state.tableData.total = res.total || formattedData.length;
       })
       .catch((err) => {
         console.error('Error fetching data: ', err);
@@ -174,16 +173,16 @@ const handleUploadError = (err: any, file: any) => {
 // 分页改变
 const onHandleSizeChange = (val: number) => {
 	state.tableData.param.pageSize = val;
-	getTableData(state.tableData.param);
+	getTableData();
 };
 // 分页改变
 const onHandleCurrentChange = (val: number) => {
 	state.tableData.param.pageNum = val;
-	getTableData(state.tableData.param);
+	getTableData();
 };
 // 页面加载时
 onMounted(() => {
-	getTableData(state.tableData.param);
+	getTableData();
 });
 </script>
 
