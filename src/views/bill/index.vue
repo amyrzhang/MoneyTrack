@@ -60,7 +60,7 @@
 				@current-change="onHandleCurrentChange"
 				class="mt15"
 				:pager-count="5"
-				:page-sizes="[10, 20, 30]"
+				:page-sizes="[100, 200, 300]"
 				v-model:current-page="state.tableData.param.pageNum"
 				background
 				v-model:page-size="state.tableData.param.pageSize"
@@ -93,7 +93,7 @@ const state = reactive<SysUserState>({
 		loading: false,
 		param: {
 			pageNum: 1,
-			pageSize: 10,
+			pageSize: 100,
 		},
 	},
 });
@@ -119,10 +119,11 @@ const getTableData = (params?: EmptyObjectType) => {
 	}
 
   let newParams = removeEmptyProperties(combineParams)
-  console.log('newParams:', JSON.stringify(newParams, null, 2));
+
   getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
+        console.log('res:', JSON.stringify(res, null, 2));
         const formattedData = res.data.map(item => ({
           ...item,
           amount: verifyNumberRMB(item.amount)
