@@ -7,22 +7,22 @@ import request from '/@/utils/request';
  *
  * 后端控制菜单模拟json，路径在 https://gitee.com/lyt-top/vue-next-admin-images/tree/master/menu
  * 后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
- * @method getAdminReport 获取后端动态路由菜单(admin)
- * @method getTestMenu 获取后端动态路由菜单(test)
+ * @method updateBillRecord 获取后端动态路由菜单(admin)
+ * @method createBillRecord 获取后端动态路由菜单(test)
  */
-export function useMenuApi() {
+export function useBillApi() {
 	return {
-		getAdminReport: (params?: object) => {
+		updateBillRecord: (params?: object) => {
 			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/adminMenu.json',
-				method: 'get',
+				url: '/transactions',
+				method: 'put',
 				params,
 			});
 		},
-		getTestMenu: (params?: object) => {
+		createBillRecord: (params?: object) => {
 			return request({
-				url: '/gitee/lyt-top/vue-next-admin-images/raw/master/menu/testMenu.json',
-				method: 'get',
+				url: '/transactions',
+				method: 'post',
 				params,
 			});
 		},

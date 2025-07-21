@@ -15,7 +15,7 @@
 					</el-icon>
 					查询
 				</el-button>
-				<el-button size="default" type="success" class="ml10" @click="onOpenAddRecord('add')">
+				<el-button size="default" type="success" class="ml10" @click="onOpenAddBill('add')">
 					<el-icon>
 						<ele-FolderAdd />
 					</el-icon>
@@ -48,7 +48,7 @@
         <el-table-column prop="payment_method" label="支付方式" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
-						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)"
+						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onOpenEditBill('edit', scope.row)"
 							>修改</el-button
 						>
 						<el-button :disabled="scope.row.userName === 'admin'" size="small" text type="primary" @click="onRowDel(scope.row)">删除</el-button>
@@ -78,7 +78,7 @@ import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useTableApi } from "/@/api/table";
 import { verifyNumberRMB } from "/@/utils/toolsValidate";
-import {UploadFilled} from "@element-plus/icons-vue";
+import { UploadFilled } from "@element-plus/icons-vue";
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/bill/dialog.vue'));
@@ -141,15 +141,15 @@ const getTableData = (params?: EmptyObjectType) => {
       });
 };
 // 打开新增记录弹窗
-const onOpenAddRecord = (type: string) => {
+const onOpenAddBill = (type: string) => {
 	userDialogRef.value.openDialog(type);
 };
 // 打开修改记录弹窗
-const onOpenEditUser = (type: string, row: RowUserType) => {
+const onOpenEditBill = (type: string, row: RowBillType) => {
 	userDialogRef.value.openDialog(type, row);
 };
-// 删除用户
-const onRowDel = (row: RowUserType) => {
+// 删除记录
+const onRowDel = (row: RowBillType) => {
 	ElMessageBox.confirm(`此操作将永久删除账户名称：“${row.userName}”，是否继续?`, '提示', {
 		confirmButtonText: '确认',
 		cancelButtonText: '取消',

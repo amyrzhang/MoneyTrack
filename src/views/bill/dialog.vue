@@ -29,22 +29,22 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="交易对方">
-              <el-input v-model="state.ruleForm.counterparty" placeholder="请输入用户昵称" clearable></el-input>
+              <el-input v-model="state.ruleForm.counterparty" placeholder="请输入交易对方" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="商品">
-              <el-input v-model="state.ruleForm.goods" placeholder="请输入手机号" clearable></el-input>
+              <el-input v-model="state.ruleForm.goods" placeholder="请输入商品名称" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="金额">
-              <el-input v-model="state.ruleForm.amount" placeholder="请输入用户昵称" clearable></el-input>
+              <el-input v-model="state.ruleForm.amount" placeholder="请输入账单金额" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="支付方式">
-              <el-input v-model="state.ruleForm.pay_method" placeholder="请输入用户昵称" clearable></el-input>
+              <el-input v-model="state.ruleForm.payment_method" placeholder="请输入支付方式" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -67,7 +67,7 @@
 <script setup lang="ts" name="systemUserDialog">
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { useMenuApi } from '/@/api/menu';
+import { useBillApi } from '/@/api/menu';
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -83,7 +83,7 @@ const state = reactive({
     counterparty: '',
     goods: '',
     amount: '',
-    pay_method: '',
+    payment_method: '',
     reversed: false,
   },
   dialog: {
@@ -95,18 +95,26 @@ const state = reactive({
 });
 
 // 打开弹窗
-const openDialog = (type: string, row: RowUserType) => {
+const openDialog = (type: string, row: RowBillType) => {
   if (type === 'edit') {
-    state.ruleForm = row;
+    // 将RowUserType转换为state.ruleForm的类型
+    const adaptedRow = {
+      time: row.time as string,
+      source: row.source || '',
+      expenditure_income: row.debit_credit || '',
+      category: row.type || '',
+      counterparty: row.counterparty || '',
+      goods: row.goods || '',
+      amount: row.amount || '',
+      payment_method: row.payment_method || '',
+      reversed: row.reversed,
+    };
+    state.ruleForm = adaptedRow;
     state.dialog.title = '修改记录';
     state.dialog.submitTxt = '修 改';
   } else {
     state.dialog.title = '新增记录';
     state.dialog.submitTxt = '新 增';
-    // 清空表单，此项需加表单验证才能使用
-    nextTick(() => {
-      userDialogFormRef.value.resetFields();
-    });
   }
   state.dialog.isShowDialog = true;
 };
@@ -121,20 +129,29 @@ const onCancel = () => {
 // 提交
 const onSubmit = () => {
   userDialogFormRef.value.validate((valid: boolean) => {
-    if (valid) {
       const data = state.ruleForm;
-      console.log('提交的数据:', data);
-      useMenuApi().updateRecord(data).then(res => {
-        ElMessage.success('提交成功');
+
+    // 判断是新增还是编辑
+    if (state.dialog.type === 'edit') {
+      // 调用 PUT 接口，更新记录
+      useBillApi().updateBillRecord(data).then(res => {
+        ElMessage.success('修改成功');
         closeDialog();
         emit('refresh');
       }).catch(err => {
-        ElMessage.error('提交失败');
-        console.error('提交失败:', err);
+        ElMessage.error('修改失败');
+        console.error('修改失败:', err);
       });
     } else {
-      ElMessage.warning('表单验证未通过');
-      return false;
+      // 调用 POST 接口，新增记录
+      useBillApi().createBillRecord(data).then(res => {
+        ElMessage.success('新增成功');
+        closeDialog();
+        emit('refresh');
+      }).catch(err => {
+        ElMessage.error('新增失败');
+        console.error('新增失败:', err);
+        });
     }
   });
 };
