@@ -138,6 +138,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				}
 			},
 			{
+				path: '/transaction',
+				name: 'transaction',
+				component: () => import('/@/views/transaction/index.vue'),
+				meta: {
+					title: '证券交易记录',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'iconfont icon-caidan',
+				}
+			},
+			{
 				path: '/personal',
 				name: 'personal',
 				component: () => import('/@/views/personal/index.vue'),
