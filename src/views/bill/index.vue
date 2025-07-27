@@ -36,12 +36,57 @@
             上传文件
           </el-button>
         </el-upload>
-
 			</div>
+			
+			<!-- 统计信息 -->
+			<el-row :gutter="15" class="mb15">
+				<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+					<el-card shadow="hover" class="home-card-item">
+						<div class="flex">
+							<div class="flex-auto">
+								<span class="font30">{{ statisticsData.income }}</span>
+								<div class="mt10">总收入</div>
+							</div>
+							<div class="home-card-item-icon flex" style="background: var(--el-color-success-light-9);">
+								<i class="flex-margin font32 iconfont icon-income" style="color: var(--el-color-success);"></i>
+							</div>
+						</div>
+					</el-card>
+				</el-col>
+				<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+					<el-card shadow="hover" class="home-card-item">
+						<div class="flex">
+							<div class="flex-auto">
+								<span class="font30">{{ statisticsData.expense }}</span>
+								<div class="mt10">总支出</div>
+							</div>
+							<div class="home-card-item-icon flex" style="background: var(--el-color-danger-light-9);">
+								<i class="flex-margin font32 iconfont icon-expenses" style="color: var(--el-color-danger);"></i>
+							</div>
+						</div>
+					</el-card>
+				</el-col>
+				<el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+					<el-card shadow="hover" class="home-card-item">
+						<div class="flex">
+							<div class="flex-auto">
+								<span class="font30">{{ statisticsData.balance }}</span>
+								<div class="mt10">结余</div>
+							</div>
+							<div class="home-card-item-icon flex" style="background: var(--el-color-primary-light-9);">
+								<i class="flex-margin font32 iconfont icon-balance" style="color: var(--el-color-primary);"></i>
+							</div>
+						</div>
+					</el-card>
+				</el-col>
+			</el-row>
+			
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" />
         <el-table-column prop="time" label="交易时间" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="debit_credit" label="收/支" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="type" label="类别" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="source" label="来源" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="counterparty" label="交易对方" min-width="100" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="goods" label="商品" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="amount" label="金额" show-overflow-tooltip></el-table-column>
@@ -86,6 +131,12 @@ const UserDialog = defineAsyncComponent(() => import('/@/views/bill/dialog.vue')
 // 定义变量内容
 const userDialogRef = ref();
 const value2 = ref('');
+const statisticsData = reactive({
+	income: '0.00',
+	expense: '0.00',
+	balance: '0.00'
+});
+
 const state = reactive<SysUserState>({
 	tableData: {
 		data: [],
@@ -130,6 +181,9 @@ const getTableData = (params?: EmptyObjectType) => {
         }));
         state.tableData.data = formattedData;
         state.tableData.total = res.total || formattedData.length;
+        
+        // 计算统计数据
+        calculateStatistics(res.data);
       })
       .catch((err) => {
         console.error('Error fetching data: ', err);
@@ -140,6 +194,26 @@ const getTableData = (params?: EmptyObjectType) => {
         }, 500);
       });
 };
+
+// 计算统计数据
+const calculateStatistics = (data: RowBillType[]) => {
+	let income = 0;
+	let expense = 0;
+	
+	data.forEach(item => {
+		const amount = parseFloat(String(item.amount)) || 0;
+		if (item.debit_credit === '收入') {
+			income += amount;
+		} else if (item.debit_credit === '支出') {
+			expense += amount;
+		}
+	});
+	
+	statisticsData.income = verifyNumberRMB(income);
+	statisticsData.expense = verifyNumberRMB(expense);
+	statisticsData.balance = verifyNumberRMB(income - expense);
+};
+
 // 打开新增记录弹窗
 const onOpenAddBill = (type: string) => {
 	userDialogRef.value.openDialog(type);
@@ -196,6 +270,21 @@ onMounted(() => {
 		overflow: auto;
 		.el-table {
 			flex: 1;
+		}
+	}
+}
+
+.home-card-item {
+	height: 100%;
+	:deep(.el-card__body) {
+		padding: 20px;
+		.home-card-item-icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 4px;
+			i {
+				color: var(--el-text-color-placeholder);
+			}
 		}
 	}
 }
