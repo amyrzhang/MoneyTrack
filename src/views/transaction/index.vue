@@ -92,6 +92,7 @@
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.tradeType === 'buy'">买入</el-tag>
             <el-tag type="danger" v-else-if="scope.row.tradeType === 'sell'">卖出</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.tradeType === 'dividend'">红利入账</el-tag>
             <span v-else>{{ scope.row.tradeType }}</span>
           </template>
         </el-table-column>
@@ -111,7 +112,7 @@
         @current-change="onHandleCurrentChange"
         class="mt15"
         :pager-count="5"
-        :page-sizes="[10, 20, 30]"
+        :page-sizes="[100, 200, 300]"
         v-model:current-page="state.tableData.param.pageNum"
         background
         v-model:page-size="state.tableData.param.pageSize"
@@ -154,7 +155,7 @@ const state = reactive({
     loading: false,
     param: {
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 100,
     },
   },
 });
@@ -187,6 +188,9 @@ const getTransactionData = () => {
       state.tableData.data = res.data.map((item: any) => {
         return {
           ...item,
+          tradeDate: formatDate(new Date(item.timestamp)),
+          securityCode: item.stock_code,
+          tradeType: item.type.toLowerCase(),
           price: verifyNumberRMB(item.price),
           amount: verifyNumberRMB(item.amount),
           fee: verifyNumberRMB(item.fee)
@@ -215,9 +219,9 @@ const calculateStatistics = (data: any[]) => {
   
   data.forEach(item => {
     const amount = parseFloat(String(item.amount).replace(/[^0-9.-]+/g, "")) || 0;
-    if (item.tradeType === 'buy') {
+    if (item.type === 'BUY') {
       totalBuy += amount;
-    } else if (item.tradeType === 'sell') {
+    } else if (item.type === 'SELL') {
       totalSell += amount;
     }
   });
@@ -274,6 +278,14 @@ const onHandleCurrentChange = (val: number) => {
 onMounted(() => {
   getTransactionData();
 });
+
+// 格式化日期
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 </script>
 
 <style scoped lang="scss">
