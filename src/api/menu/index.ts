@@ -12,18 +12,18 @@ import request from '/@/utils/request';
  */
 export function useBillApi() {
 	return {
-		updateBillRecord: (params?: object) => {
+		updateBillRecord: (data?: object) => {
 			return request({
 				url: '/transactions',
 				method: 'put',
-				params,
+				data,
 			});
 		},
-		createBillRecord: (params?: object) => {
+		createBillRecord: (data?: object) => {
 			return request({
 				url: '/transactions',
 				method: 'post',
-				params,
+				data,
 			});
 		},
 	};

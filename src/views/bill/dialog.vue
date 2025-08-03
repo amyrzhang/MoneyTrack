@@ -5,7 +5,7 @@
         <el-row :gutter="35">
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="交易时间">
-              <el-date-picker v-model="state.ruleForm.time" type="date" placeholder="请选择" class="w100"> </el-date-picker>
+              <el-date-picker v-model="state.ruleForm.time" type="datetime" placeholder="请选择" class="w100"> </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -109,6 +109,10 @@ const openDialog = (type: string, row: RowBillType) => {
       payment_method: row.payment_method || '',
       reversed: row.reversed,
     };
+    // 如果时间是ISO格式，转换为后端需要的格式
+    if (adaptedRow.time && adaptedRow.time.includes('T')) {
+      adaptedRow.time = new Date(adaptedRow.time).toLocaleString('sv-SE');
+    }
     state.ruleForm = adaptedRow;
     state.dialog.title = '修改记录';
     state.dialog.submitTxt = '修 改';
@@ -129,12 +133,24 @@ const onCancel = () => {
 // 提交
 const onSubmit = () => {
   userDialogFormRef.value.validate((valid: boolean) => {
-      const data = state.ruleForm;
-
+    // 处理时间格式，确保符合后端要求
+    const formData = { ...state.ruleForm };
+    if (formData.time instanceof Date) {
+      // 将Date对象转换为'YYYY-MM-DD HH:mm:ss'格式
+      formData.time = formData.time.toLocaleString('sv-SE');
+    } else if (typeof formData.time === 'string' && formData.time.includes('T')) {
+      // 将ISO格式转换为'YYYY-MM-DD HH:mm:ss'格式
+      formData.time = new Date(formData.time).toLocaleString('sv-SE');
+    }
+    
+    // 确保字段名映射正确，前端的expenditure_income对应后端的debit_credit
+    formData.debit_credit = formData.expenditure_income;
+    delete formData.expenditure_income;
+    
     // 判断是新增还是编辑
     if (state.dialog.type === 'edit') {
       // 调用 PUT 接口，更新记录
-      useBillApi().updateBillRecord(data).then(res => {
+      useBillApi().updateBillRecord(formData).then(res => {
         ElMessage.success('修改成功');
         closeDialog();
         emit('refresh');
@@ -144,14 +160,17 @@ const onSubmit = () => {
       });
     } else {
       // 调用 POST 接口，新增记录
-      useBillApi().createBillRecord(data).then(res => {
+      // 确保发送的数据格式符合后端要求 - 后端需要的是列表格式
+      const requestData = [formData];
+      
+      useBillApi().createBillRecord(requestData).then(res => {
         ElMessage.success('新增成功');
         closeDialog();
         emit('refresh');
       }).catch(err => {
         ElMessage.error('新增失败');
         console.error('新增失败:', err);
-        });
+      });
     }
   });
 };
@@ -160,4 +179,5 @@ const onSubmit = () => {
 defineExpose({
   openDialog,
 });
+
 </script>
