@@ -9,6 +9,17 @@
 					value-format="YYYY-MM"
 					placeholder="选择月">
 				</el-date-picker>
+				
+				<el-select v-model="searchForm.debit_credit" clearable placeholder="请选择收支" class="ml10">
+					<el-option label="收入" value="收入"></el-option>
+					<el-option label="支出" value="支出"></el-option>
+					<el-option label="不计收支" value="不计收支"></el-option>
+				</el-select>
+				
+				<el-input v-model="searchForm.source" placeholder="请输入来源" clearable class="ml10" style="width: 150px;"></el-input>
+				
+				<el-input v-model="searchForm.payment_method" placeholder="请输入支付方式" clearable class="ml10" style="width: 150px;"></el-input>
+				
 				<el-button size="default" type="primary" class="ml10" @click="getTableData">
 					<el-icon>
 						<ele-Search />
@@ -131,6 +142,14 @@ const UserDialog = defineAsyncComponent(() => import('/@/views/bill/dialog.vue')
 // 定义变量内容
 const userDialogRef = ref();
 const value2 = ref('');
+
+// 搜索表单
+const searchForm = reactive({
+  debit_credit: '',
+  source: '',
+  payment_method: ''
+});
+
 const statisticsData = reactive({
 	income: '0.00',
 	expense: '0.00',
@@ -163,10 +182,13 @@ const getTableData = (params?: EmptyObjectType) => {
     }
     return obj;
   }
-	// 将 value2 的值添加到 params 中
+	// 将 value2 和搜索条件的值添加到 params 中
 	const combineParams  = {
 		...state.tableData.param,  // 使用传入的 params（如分页参数）
-		time: value2.value
+		time: value2.value,
+    debit_credit: searchForm.debit_credit,
+    source: searchForm.source,
+    payment_method: searchForm.payment_method
 	}
 
   let newParams = removeEmptyProperties(combineParams)
