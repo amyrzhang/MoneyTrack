@@ -9,8 +9,8 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="类别">
-              <el-input v-model="state.ruleForm.category" placeholder="请输入" clearable></el-input>
+            <el-form-item label="类型">
+              <el-input v-model="state.ruleForm.type" placeholder="请输入" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -79,7 +79,7 @@ const state = reactive({
     time: '',
     source: '',
     expenditure_income: '',
-    category: '',
+    type: '',
     counterparty: '',
     goods: '',
     amount: '',
@@ -102,7 +102,7 @@ const openDialog = (type: string, row: RowBillType) => {
       time: row.time as string,
       source: row.source || '',
       expenditure_income: row.debit_credit || '',
-      category: row.type || '',
+      type: row.type || '',
       counterparty: row.counterparty || '',
       goods: row.goods || '',
       amount: row.amount || '',
