@@ -4,7 +4,8 @@
       <el-tab-pane label="资产概览" name="overview">
         <el-card shadow="hover" header="资产概览">
           <el-table :data="state.tableData" style="width: 100%">
-            <el-table-column prop="account_name" label="资产账户"> </el-table-column>
+            <el-table-column prop="account_name" label="资产账户">
+            </el-table-column>
             <el-table-column prop="account_type" label="账户类型" align="right"> </el-table-column>
             <el-table-column prop="balance" label="余额(￥)" align="right"> </el-table-column>
             <el-table-column prop="percent" label="仓位(%)" align="right"> </el-table-column>

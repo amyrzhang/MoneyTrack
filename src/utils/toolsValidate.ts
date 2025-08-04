@@ -139,16 +139,21 @@ export function verifyNumberComma(val: string) {
 
 /**
  * 金额用 `,` 区分开，带小数点
- * @param val 当前值字符串
+ * @param val 当前值
+ * @param digits 小数位数，默认为2位
  * @returns 返回处理后的字符串
  */
-export function verifyNumberRMB(val: number): string {
+export function verifyNumberRMB(val: number, digits: number = 2): string {
 	const formattedValue = new Intl.NumberFormat('zh-CN', {
 		style: 'currency',
-		currency: 'CNY'
+		currency: 'CNY',
+		minimumFractionDigits: digits,
+		maximumFractionDigits: digits
 	}).format(val);
-	// 确保字符串长度为 10，并向左填充空格
-	return formattedValue.padStart(10, ' ');
+	// 确保字符串长度为适当长度，并向左填充空格
+	// 根据小数位数调整最小宽度（整数部分+小数点+小数位数+货币符号）
+	const minWidth = 6 + digits; 
+	return formattedValue.padStart(minWidth, ' ');
 }
 
 /**
@@ -252,7 +257,7 @@ export function verifyPassword(val: string) {
  */
 export function verifyPasswordPowerful(val: string) {
 	// false: 强密码不正确
-	if (!/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val))
+	if (!/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-Z\d]+$)(?![a-zA-Z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val))
 		return false;
 	// true: 强密码正确
 	else return true;
@@ -271,9 +276,9 @@ export function verifyPasswordStrength(val: string) {
 	// 弱：纯数字，纯字母，纯特殊字符
 	if (/^(?:\d+|[a-zA-Z]+|[!@#$%^&\.*]+){6,16}$/.test(val)) v = '弱';
 	// 中：字母+数字，字母+特殊字符，数字+特殊字符
-	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val)) v = '中';
+	if (/^(?![a-zA-Z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val)) v = '中';
 	// 强：字母+数字+特殊字符
-	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val))
+	if (/^(?![a-zA-Z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-Z\d]+$)(?![a-zA-Z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,16}$/.test(val))
 		v = '强';
 	// 返回结果
 	return v;

@@ -12,12 +12,12 @@
           end-placeholder="结束日期"
           class="mr10"
         ></el-date-picker>
-        <el-select v-model="searchForm.securityType" placeholder="证券类型" clearable class="mr10">
+        <el-select v-model="searchForm.type" placeholder="证券类型" clearable class="mr10">
           <el-option label="股票" value="stock"></el-option>
           <el-option label="基金" value="fund"></el-option>
           <el-option label="债券" value="bond"></el-option>
         </el-select>
-        <el-input v-model="searchForm.securityCode" placeholder="证券代码" clearable class="mr10" style="width: 150px;"></el-input>
+        <el-input v-model="searchForm.stock_code" placeholder="证券代码" clearable class="mr10" style="width: 150px;"></el-input>
         <el-button size="default" type="primary" class="ml10" @click="getTransactionData">
           <el-icon>
             <ele-Search />
@@ -77,23 +77,23 @@
 
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="tradeDate" label="交易日期" min-width="100" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="securityCode" label="证券代码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="timestamp" label="交易日期" min-width="100" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="stock_code" label="证券代码" show-overflow-tooltip></el-table-column>
         <el-table-column prop="securityName" label="证券名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="securityType" label="证券类型" show-overflow-tooltip>
+        <el-table-column prop="type" label="证券类型" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag v-if="scope.row.securityType === 'stock'">股票</el-tag>
-            <el-tag v-else-if="scope.row.securityType === 'fund'">基金</el-tag>
-            <el-tag v-else-if="scope.row.securityType === 'bond'">债券</el-tag>
-            <span v-else>{{ scope.row.securityType }}</span>
+            <el-tag v-if="scope.row.type === 'stock'">股票</el-tag>
+            <el-tag v-else-if="scope.row.type === 'fund'">基金</el-tag>
+            <el-tag v-else-if="scope.row.type === 'bond'">债券</el-tag>
+            <span v-else>{{ scope.row.type }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="tradeType" label="交易类型" show-overflow-tooltip>
+        <el-table-column prop="type" label="交易类型" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag type="success" v-if="scope.row.tradeType === 'buy'">买入</el-tag>
-            <el-tag type="danger" v-else-if="scope.row.tradeType === 'sell'">卖出</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.tradeType === 'dividend'">红利入账</el-tag>
-            <span v-else>{{ scope.row.tradeType }}</span>
+            <el-tag type="success" v-if="scope.row.type === 'buy'">买入</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.type === 'sell'">卖出</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.type === 'dividend'">红利入账</el-tag>
+            <span v-else>{{ scope.row.type }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="price" label="成交价格(￥)" align="right" show-overflow-tooltip></el-table-column>
@@ -138,8 +138,8 @@ const TransactionDialog = defineAsyncComponent(() => import('./dialog.vue'));
 const transactionDialogRef = ref();
 const searchForm = reactive({
   dateRange: [],
-  securityType: '',
-  securityCode: ''
+  type: '',
+  stock_code: ''
 });
 
 const statisticsData = reactive({
@@ -171,8 +171,8 @@ const getTransactionData = () => {
     ...state.tableData.param,
     startDate: searchForm.dateRange && searchForm.dateRange[0] ? searchForm.dateRange[0] : undefined,
     endDate: searchForm.dateRange && searchForm.dateRange[1] ? searchForm.dateRange[1] : undefined,
-    securityType: searchForm.securityType || undefined,
-    securityCode: searchForm.securityCode || undefined
+    type: searchForm.type || undefined,
+    stock_code: searchForm.stock_code || undefined
   };
 
   // 移除空参数
@@ -191,7 +191,7 @@ const getTransactionData = () => {
           tradeDate: formatDate(new Date(item.timestamp)),
           securityCode: item.stock_code,
           tradeType: item.type.toLowerCase(),
-          price: verifyNumberRMB(item.price),
+          price: verifyNumberRMB(item.price, 3),
           amount: verifyNumberRMB(item.amount),
           fee: verifyNumberRMB(item.fee)
         };
@@ -243,7 +243,7 @@ const onOpenEditTransaction = (type: string, row: any) => {
 
 // 删除记录
 const onRowDel = (row: any) => {
-  ElMessageBox.confirm(`此操作将永久删除证券代码：“${row.securityCode}”的交易记录，是否继续?`, '提示', {
+  ElMessageBox.confirm(`此操作将永久删除证券代码：“${row.stock_code}”的交易记录，是否继续?`, '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',

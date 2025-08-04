@@ -4,41 +4,27 @@
       <el-form ref="userDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
         <el-row :gutter="35">
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="交易日期">
+            <el-form-item label="交易时间">
               <el-date-picker
-                v-model="state.ruleForm.tradeDate"
-                type="date"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择交易日期"
-                style="width: 100%"
+                  v-model="state.ruleForm.timestamp"
+                  type="datetime"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择交易日期"
+                  style="width: 100%"
               ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="证券代码">
-              <el-input v-model="state.ruleForm.securityCode" placeholder="请输入证券代码" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="证券名称">
-              <el-input v-model="state.ruleForm.securityName" placeholder="请输入证券名称" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="证券类型">
-              <el-select v-model="state.ruleForm.securityType" placeholder="请选择证券类型" clearable class="w100">
-                <el-option label="股票" value="stock"></el-option>
-                <el-option label="基金" value="fund"></el-option>
-                <el-option label="债券" value="bond"></el-option>
-              </el-select>
+              <el-input v-model="state.ruleForm.stock_code" placeholder="请输入证券代码" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="交易类型">
-              <el-select v-model="state.ruleForm.tradeType" placeholder="请选择交易类型" clearable class="w100">
-                <el-option label="买入" value="buy"></el-option>
-                <el-option label="卖出" value="sell"></el-option>
+              <el-select v-model="state.ruleForm.type" placeholder="请选择交易类型" clearable class="w100">
+                <el-option label="买入" value="BUY"></el-option>
+                <el-option label="卖出" value="SELL"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -60,11 +46,6 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="手续费">
               <el-input v-model="state.ruleForm.fee" placeholder="请输入手续费" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-            <el-form-item label="备注">
-              <el-input v-model="state.ruleForm.remark" type="textarea" placeholder="请输入备注" maxlength="150"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -100,16 +81,13 @@ const state = reactive({
   },
   ruleForm: {
     id: '',
-    tradeDate: '',
-    securityCode: '',
-    securityName: '',
-    securityType: '',
-    tradeType: '',
+    timestamp: '',
+    stock_code: '',
+    type: '',
     price: '',
     quantity: '',
     amount: '',
     fee: '',
-    remark: '',
   },
 });
 
@@ -176,8 +154,9 @@ const onSubmit = () => {
         });
     } else {
       // 新增证券交易记录
-      createTransaction(state.ruleForm)
+      createTransaction([state.ruleForm])
         .then(() => {
+          console.log('New transaction created: ', [state.ruleForm])
           ElMessage.success('新增成功');
           closeDialog();
           emit('refresh');

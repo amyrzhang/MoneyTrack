@@ -20,7 +20,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="收/支">
-              <el-select v-model="state.ruleForm.expenditure_income" placeholder="请选择" clearable class="w100">
+              <el-select v-model="state.ruleForm.debit_credit" placeholder="请选择" clearable class="w100">
                 <el-option label="收入" value="收入"></el-option>
                 <el-option label="支出" value="支出"></el-option>
                 <el-option label="不计收支" value="不计收支"></el-option>
@@ -78,7 +78,7 @@ const state = reactive({
   ruleForm: {
     time: '',
     source: '',
-    expenditure_income: '',
+    debit_credit: '',
     type: '',
     counterparty: '',
     goods: '',
@@ -101,7 +101,7 @@ const openDialog = (type: string, row: RowBillType) => {
     const adaptedRow = {
       time: row.time as string,
       source: row.source || '',
-      expenditure_income: row.debit_credit || '',
+      debit_credit: row.debit_credit || '',
       type: row.type || '',
       counterparty: row.counterparty || '',
       goods: row.goods || '',
@@ -144,8 +144,8 @@ const onSubmit = () => {
     }
     
     // 确保字段名映射正确，前端的expenditure_income对应后端的debit_credit
-    formData.debit_credit = formData.expenditure_income;
-    delete formData.expenditure_income;
+    formData.debit_credit = formData.debit_credit;
+    delete formData.debit_credit;
     
     // 判断是新增还是编辑
     if (state.dialog.type === 'edit') {

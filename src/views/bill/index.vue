@@ -180,10 +180,10 @@ const state = reactive<SysUserState>({
 // 初始化表格数据
 const getTableData = (params?: EmptyObjectType) => {
   const { getTable } = useTableApi();
-	state.tableData.loading = true;
+  state.tableData.loading = true;
   state.tableData.data = [];
 
-	function removeEmptyProperties(obj) {
+  function removeEmptyProperties(obj) {
     for (const key in obj) {
       if (obj[key] === '') {
         delete obj[key];
@@ -191,14 +191,14 @@ const getTableData = (params?: EmptyObjectType) => {
     }
     return obj;
   }
-	// 将 value2 和搜索条件的值添加到 params 中
-	const combineParams  = {
-		...state.tableData.param,  // 使用传入的 params（如分页参数）
-		time: value2.value,
+  // 将 value2 和搜索条件的值添加到 params 中
+  const combineParams  = {
+    ...state.tableData.param,  // 使用传入的 params（如分页参数）
+    time: value2.value,
     debit_credit: searchForm.debit_credit,
     source: searchForm.source,
     payment_method: searchForm.payment_method
-	}
+  }
 
   let newParams = removeEmptyProperties(combineParams)
 
@@ -207,7 +207,7 @@ const getTableData = (params?: EmptyObjectType) => {
         // 对 res 中的每个元素进行格式化处理
         const formattedData = res.data.map(item => ({
           ...item,
-          amount: verifyNumberRMB(item.amount)
+          amount: formatNumberForAmount(item.amount)
         }));
         state.tableData.data = formattedData;
         state.tableData.total = res.total || formattedData.length;
@@ -225,23 +225,53 @@ const getTableData = (params?: EmptyObjectType) => {
       });
 };
 
+// 为金额字段格式化数字显示
+const formatNumberForAmount = (value: any) => {
+  // 如果值为空或无效，返回默认值
+  if (value === undefined || value === null || value === '') {
+    return '0.00';
+  }
+  
+  // 如果是字符串，尝试转换为数字
+  let numericValue: number;
+  if (typeof value === 'string') {
+    numericValue = parseFloat(value);
+    // 如果转换失败，返回默认值
+    if (isNaN(numericValue)) {
+      return '0.00';
+    }
+  } else if (typeof value === 'number') {
+    numericValue = value;
+  } else {
+    // 其他类型尝试转换为数字
+    numericValue = Number(value);
+    if (isNaN(numericValue)) {
+      return '0.00';
+    }
+  }
+  
+  // 使用项目中已有的工具函数格式化
+  return verifyNumberRMB(numericValue);
+};
+
 // 计算统计数据
 const calculateStatistics = (data: RowBillType[]) => {
-	let income = 0;
-	let expense = 0;
-	
-	data.forEach(item => {
-		const amount = parseFloat(String(item.amount)) || 0;
-		if (item.debit_credit === '收入') {
-			income += amount;
-		} else if (item.debit_credit === '支出') {
-			expense += amount;
-		}
-	});
-	
-	statisticsData.income = verifyNumberRMB(income);
-	statisticsData.expense = verifyNumberRMB(expense);
-	statisticsData.balance = verifyNumberRMB(income - expense);
+  let income = 0;
+  let expense = 0;
+  
+  data.forEach(item => {
+    // 确保金额是数字类型
+    const amount = parseFloat(String(item.amount)) || 0;
+    if (item.debit_credit === '收入') {
+      income += amount;
+    } else if (item.debit_credit === '支出') {
+      expense += amount;
+    }
+  });
+  
+  statisticsData.income = verifyNumberRMB(income);
+  statisticsData.expense = verifyNumberRMB(expense);
+  statisticsData.balance = verifyNumberRMB(income - expense);
 };
 
 // 打开新增记录弹窗
