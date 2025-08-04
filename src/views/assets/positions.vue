@@ -1,6 +1,38 @@
 <template>
   <div class="positions-container layout-pd">
     <el-card shadow="hover" header="证券持仓" class="mt15">
+      <!-- 统计信息 -->
+      <el-row :gutter="15" class="mb15">
+        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+          <el-card shadow="hover" class="home-card-item">
+            <div class="flex">
+              <div class="flex-auto">
+                <span class="font30">{{ formatNumber(state.statistics.totalPositionValue, 2) }}</span>
+                <div class="mt10">证券市值</div>
+              </div>
+              <div class="home-card-item-icon flex" style="background: var(--el-color-success-light-9);">
+                <i class="flex-margin font32 iconfont icon-income" style="color: var(--el-color-success);"></i>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6">
+          <el-card shadow="hover" class="home-card-item">
+            <div class="flex">
+              <div class="flex-auto">
+                <span :class="state.statistics.totalUnrealizedPnl >= 0 ? 'text-danger' : 'text-success'">
+                  {{ formatNumber(state.statistics.totalUnrealizedPnl, 2) }}
+                </span>
+                <div class="mt10">持仓盈亏</div>
+              </div>
+              <div class="home-card-item-icon flex" style="background: var(--el-color-primary-light-9);">
+                <i class="flex-margin font32 iconfont icon-balance" style="color: var(--el-color-primary);"></i>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      
       <el-table :data="state.tableData" style="width: 100%" v-loading="state.loading">
         <el-table-column prop="stock_code" label="证券代码" width="100">
         </el-table-column>
@@ -34,7 +66,7 @@
         <el-table-column prop="pnl_ratio" label="持仓盈亏率" align="right">
           <template #default="scope">
             <span :class="scope.row.pnl_ratio >= 0 ? 'text-danger' : 'text-success'">
-              {{ scope.row.pnl_ratio >= 0 ? '+' : '' }}{{ formatNumber(scope.row.pnl_ratio) }}%
+              {{ scope.row.pnl_ratio >= 0 ? '+' : '' }}{{ formatNumber(scope.row.pnl_ratio, 2) }}%
             </span>
           </template>
         </el-table-column>
@@ -47,7 +79,7 @@
         </el-table-column>
         <el-table-column prop="position_ratio" label="仓位比例(%)" align="right">
           <template #default="scope">
-            {{ formatNumber(scope.row.position_ratio * 100) }}%
+            {{ formatNumber(scope.row.position_ratio * 100, 2) }}%
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +104,6 @@
 <script setup lang="ts" name="assetPositions">
 import { reactive, onMounted } from 'vue';
 import { useTableApi } from '/@/api/table';
-import { verifyNumberRMB } from '/@/utils/toolsValidate';
 
 // 定义变量内容
 const state = reactive({
@@ -82,6 +113,10 @@ const state = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+  },
+  statistics: {
+    totalPositionValue: 0, // 证券市值总和
+    totalUnrealizedPnl: 0  // 持仓盈亏总和
   }
 });
 
@@ -102,6 +137,20 @@ const formatNumber = (value: number, digits: number = 2) => {
   return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
 };
 
+// 计算统计信息
+const calculateStatistics = (data: any[]) => {
+  let totalPositionValue = 0;
+  let totalUnrealizedPnl = 0;
+  
+  data.forEach(item => {
+    totalPositionValue += parseFloat(item.position_value) || 0;
+    totalUnrealizedPnl += parseFloat(item.unrealized_pnl) || 0;
+  });
+  
+  state.statistics.totalPositionValue = totalPositionValue;
+  state.statistics.totalUnrealizedPnl = totalUnrealizedPnl;
+};
+
 // 获取持仓数据
 const getPositionsData = async () => {
   state.loading = true;
@@ -110,6 +159,9 @@ const getPositionsData = async () => {
     const res = await getPosition(state.queryParams);
     state.tableData = res.data || [];
     state.total = res.total || 0;
+    
+    // 计算统计信息
+    calculateStatistics(state.tableData);
   } catch (error) {
     console.error('获取证券持仓数据失败:', error);
   } finally {
@@ -153,6 +205,21 @@ onMounted(() => {
   
   .text-danger {
     color: var(--el-color-danger);
+  }
+  
+  .home-card-item {
+    height: 100%;
+    :deep(.el-card__body) {
+      padding: 20px;
+      .home-card-item-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        i {
+          color: var(--el-text-color-placeholder);
+        }
+      }
+    }
   }
 }
 </style>
