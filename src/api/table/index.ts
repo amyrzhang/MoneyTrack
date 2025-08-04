@@ -33,5 +33,12 @@ export function useTableApi() {
                 data
             });
         },
+        getPosition: (params?: object) => {
+            return request({
+                url: '/positions',
+                method: 'get',
+                params,
+            });
+        },
     };
 }

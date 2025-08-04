@@ -32,7 +32,7 @@
 					</el-icon>
 					新增记录
 				</el-button>
-				<el-button size="default" type="primary" class="ml10" @click="onOpenAddTransfer">
+				<el-button size="default" type="success" class="ml10" @click="onOpenAddTransfer">
 					<el-icon>
 						<ele-FolderAdd />
 					</el-icon>
@@ -40,13 +40,13 @@
 				</el-button>
 				<!-- TODO: 改为读环境变量，动态获取             -->
         <el-upload
-            style="display: inline-block"
+            style="display: inline-block; vertical-align: top;"
             class="upload-btn ml10"
             action="http://43.134.233.6:18080/upload"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
         >
-          <el-button size="default" type="warning" class="ml10">
+          <el-button size="default" type="warning">
             <el-icon>
               <UploadFilled />
             </el-icon>
