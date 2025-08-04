@@ -32,6 +32,12 @@
 					</el-icon>
 					新增记录
 				</el-button>
+				<el-button size="default" type="primary" class="ml10" @click="onOpenAddTransfer">
+					<el-icon>
+						<ele-FolderAdd />
+					</el-icon>
+					新增自转账
+				</el-button>
 				<!-- TODO: 改为读环境变量，动态获取             -->
         <el-upload
             style="display: inline-block"
@@ -126,6 +132,7 @@
 			</el-pagination>
 		</el-card>
 		<UserDialog ref="userDialogRef" @refresh="getTableData()" />
+		<TransferDialog ref="transferDialogRef" @refresh="getTableData()" />
 	</div>
 </template>
 
@@ -138,9 +145,11 @@ import { UploadFilled } from "@element-plus/icons-vue";
 
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/bill/dialog.vue'));
+const TransferDialog = defineAsyncComponent(() => import('/@/views/bill/transferDialog.vue'));
 
 // 定义变量内容
 const userDialogRef = ref();
+const transferDialogRef = ref();
 const value2 = ref('');
 
 // 搜索表单
@@ -196,7 +205,6 @@ const getTableData = (params?: EmptyObjectType) => {
   getTable(newParams)
       .then((res) => {
         // 对 res 中的每个元素进行格式化处理
-        console.log('res:', JSON.stringify(res, null, 2));
         const formattedData = res.data.map(item => ({
           ...item,
           amount: verifyNumberRMB(item.amount)
@@ -240,6 +248,12 @@ const calculateStatistics = (data: RowBillType[]) => {
 const onOpenAddBill = (type: string) => {
 	userDialogRef.value.openDialog(type);
 };
+
+// 打开新增转账弹窗
+const onOpenAddTransfer = () => {
+	transferDialogRef.value.openDialog();
+};
+
 // 打开修改记录弹窗
 const onOpenEditBill = (type: string, row: RowBillType) => {
 	userDialogRef.value.openDialog(type, row);

@@ -19,13 +19,6 @@ export function useTableApi() {
                 params,
             });
         },
-        updateRecord:(params?: object) => {
-            return request({
-                url: '/transactions',
-                method: 'post',
-                params
-            });
-        },
         getAccountBalance: (params?: object) => {
             return request({
                 url: '/account/balance',
@@ -33,11 +26,11 @@ export function useTableApi() {
                 params,
             });
         },
-        getAccountActivity: (params?: object) => {
+        transfer: (data?: object) => {
             return request({
-                url: '/account/activity',
-                method: 'get',
-                params,
+                url: '/transfer',
+                method: 'post',
+                data
             });
         },
     };
