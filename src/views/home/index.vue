@@ -39,7 +39,16 @@
 				<el-card shadow="hover" header="支出排行" class="mt15">
 					<el-table :data="state.tableData" stripe border style="width: 100%">
 						<el-table-column prop="goods" label="商品" min-width="200"></el-table-column>
-						<el-table-column prop="amount" label="金额" min-width="80" align="right"></el-table-column>
+						<el-table-column prop="amount" label="金额" min-width="80" align="right">
+							<template #default="scope">
+								{{ formatAmount(scope.row.amount) }}
+							</template>
+						</el-table-column>
+						<el-table-column prop="cumulativeAmount" label="累计金额" min-width="80" align="right">
+							<template #default="scope">
+								{{ formatAmount(scope.row.cumulativeAmount) }}
+							</template>
+						</el-table-column>
 						<el-table-column prop="cdf" label="累积占比" min-width="80" align="right"></el-table-column>
 					</el-table>
 				</el-card>
@@ -49,12 +58,12 @@
 </template>
 
 <script setup lang="ts" name="home">
-import { reactive, onMounted, ref, watch, nextTick, onActivated, markRaw } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useThemeConfig } from '/@/stores/themeConfig';
-import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
-import { useReportApi } from "/@/api/report";
-import { verifyNumberRMB } from '/@/utils/toolsValidate'
+import {nextTick, onActivated, onMounted, reactive, watch} from 'vue';
+import {storeToRefs} from 'pinia';
+import {useThemeConfig} from '/@/stores/themeConfig';
+import {useTagsViewRoutes} from '/@/stores/tagsViewRoutes';
+import {useReportApi} from "/@/api/report";
+import {verifyNumberRMB} from '/@/utils/toolsValidate'
 
 // 定义变量内容
 const storesTagsViewRoutes = useTagsViewRoutes();
@@ -134,9 +143,17 @@ const initTableData1 = () => {
 const initTableData = () => {
   const { getExpTop10 } = useReportApi();
   getExpTop10().then((res) => {
-		// eslint-disable-next-line no-console
-		console.log(res);
-    state.tableData = res;
+
+    // 计算累计金额和占比
+    let cumulativeAmount = 0;
+    state.tableData = res.map((item: any) => {
+      // 累计金额计算（逐项累加）
+      cumulativeAmount += parseFloat(item.amount);
+      return {
+        ...item,
+        cumulativeAmount: cumulativeAmount.toFixed(2)
+      };
+    });
   });
 };
 // 批量设置 echarts resize
@@ -149,6 +166,22 @@ const initEchartsResizeFun = () => {
     }
   });
 };
+
+// 格式化金额，添加千分位分隔符
+const formatAmount = (value: string | number) => {
+  // 去除千分位分隔符并转换为浮点数
+  const cleanValue = String(value).replace(/,/g, '');
+  const num = parseFloat(cleanValue);
+  
+  // 检查是否为有效数字
+  if (isNaN(num)) {
+    return value;
+  }
+  
+  // 格式化为带有千分位分隔符的字符串，保留两位小数
+  return num.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
 // 批量设置 echarts resize
 const initEchartsResize = () => {
   window.addEventListener('resize', initEchartsResizeFun);
