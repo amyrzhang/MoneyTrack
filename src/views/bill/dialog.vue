@@ -47,11 +47,6 @@
               <el-input v-model="state.ruleForm.payment_method" placeholder="请输入支付方式" clearable></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-            <el-form-item label="是否冲账">
-              <el-switch v-model="state.ruleForm.reversed" inline-prompt active-text="启" inactive-text="禁"></el-switch>
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
       <template #footer>
@@ -82,9 +77,8 @@ const state = reactive({
     type: '',
     counterparty: '',
     goods: '',
-    amount: '',
+    amount: 0.00,
     payment_method: '',
-    reversed: false,
   },
   dialog: {
     isShowDialog: false,
@@ -105,9 +99,8 @@ const openDialog = (type: string, row: RowBillType) => {
       type: row.type || '',
       counterparty: row.counterparty || '',
       goods: row.goods || '',
-      amount: row.amount || '',
-      payment_method: row.payment_method || '',
-      reversed: row.reversed,
+      amount: row.amount || 0.00,
+      payment_method: row.payment_method || ''
     };
     // 如果时间是ISO格式，转换为后端需要的格式
     if (adaptedRow.time && adaptedRow.time.includes('T')) {
@@ -142,11 +135,7 @@ const onSubmit = () => {
       // 将ISO格式转换为'YYYY-MM-DD HH:mm:ss'格式
       formData.time = new Date(formData.time).toLocaleString('sv-SE');
     }
-    
-    // 确保字段名映射正确，前端的expenditure_income对应后端的debit_credit
-    formData.debit_credit = formData.debit_credit;
-    delete formData.debit_credit;
-    
+
     // 判断是新增还是编辑
     if (state.dialog.type === 'edit') {
       // 调用 PUT 接口，更新记录
@@ -162,7 +151,7 @@ const onSubmit = () => {
       // 调用 POST 接口，新增记录
       // 确保发送的数据格式符合后端要求 - 后端需要的是列表格式
       const requestData = [formData];
-      
+
       useBillApi().createBillRecord(requestData).then(res => {
         ElMessage.success('新增成功');
         closeDialog();
