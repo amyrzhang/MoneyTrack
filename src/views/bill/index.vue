@@ -102,7 +102,7 @@
 				<el-table-column type="index" label="序号" />
         <el-table-column prop="time" label="交易时间" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="debit_credit" label="收/支" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="type" label="类别" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="type" label="类型" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="source" label="来源" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="counterparty" label="交易对方" min-width="100" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="goods" label="商品" min-width="150" show-overflow-tooltip></el-table-column>
