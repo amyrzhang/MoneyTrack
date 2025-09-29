@@ -44,7 +44,14 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="支付方式">
-              <el-input v-model="state.ruleForm.payment_method" placeholder="请输入支付方式" clearable></el-input>
+              <el-select v-model="state.ruleForm.payment_method" placeholder="请选择支付方式" clearable filterable class="w100">
+                <el-option
+                  v-for="item in state.paymentMethodOptions"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -80,6 +87,18 @@ const state = reactive({
     amount: 0.00,
     payment_method: '',
   },
+  // 常见支付方式选项
+  paymentMethodOptions: [
+    '交通银行储蓄卡(9585)',
+    '民生银行储蓄卡(4827)',
+    '沧州银行储蓄卡(3043)',
+    '北京银行储蓄卡(3574)',
+    '华夏银行储蓄卡(8041)',
+    '招商银行储蓄卡(7752)',
+    '东方财富证券(5700)',
+    '零钱',
+    '余额宝'
+  ],
   dialog: {
     isShowDialog: false,
     type: '',
@@ -112,6 +131,17 @@ const openDialog = (type: string, row: RowBillType) => {
   } else {
     state.dialog.title = '新增记录';
     state.dialog.submitTxt = '新 增';
+    // 重置表单
+    state.ruleForm = {
+      time: '',
+      source: '',
+      debit_credit: '',
+      type: '',
+      counterparty: '',
+      goods: '',
+      amount: 0.00,
+      payment_method: '',
+    };
   }
   state.dialog.isShowDialog = true;
 };

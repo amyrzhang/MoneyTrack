@@ -22,23 +22,37 @@
 
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item label="支付方式" prop="payment_method">
-              <el-input
+              <el-select
                   v-model="formData.payment_method"
-                  placeholder="请输入支付方式"
+                  placeholder="请选择支付方式"
                   clearable
-                  style="width: 100%"
-              />
+                  filterable
+                  style="width: 100%">
+                <el-option
+                  v-for="item in paymentMethodOptions"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
 
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
             <el-form-item label="交易对方" prop="counterparty">
-              <el-input
+              <el-select
                   v-model="formData.counterparty"
-                  placeholder="请输入交易对方"
+                  placeholder="请选择交易对方"
                   clearable
-                  style="width: 100%"
-              />
+                  filterable
+                  style="width: 100%">
+                <el-option
+                  v-for="item in counterpartyOptions"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
 
@@ -80,6 +94,32 @@ const { proxy } = getCurrentInstance() as any;
 const title = ref('新增自转账');
 const isShowDialog = ref(false);
 
+// 常见支付方式选项
+const paymentMethodOptions = [
+  '交通银行储蓄卡(9585)',
+  '民生银行储蓄卡(4827)',
+  '沧州银行储蓄卡(3043)',
+  '北京银行储蓄卡(3574)',
+  '华夏银行储蓄卡(8041)',
+  '招商银行储蓄卡(7752)',
+  '东方财富证券(5700)',
+  '零钱',
+  '余额宝'
+];
+
+// 常见交易对方选项
+const counterpartyOptions = [
+  '交通银行储蓄卡(9585)',
+  '民生银行储蓄卡(4827)',
+  '沧州银行储蓄卡(3043)',
+  '北京银行储蓄卡(3574)',
+  '华夏银行储蓄卡(8041)',
+  '招商银行储蓄卡(7752)',
+  '东方财富证券(5700)',
+  '零钱',
+  '余额宝'
+];
+
 const formData = reactive({
   time: '',
   payment_method: '',
@@ -90,13 +130,18 @@ const formData = reactive({
 // 表单校验规则
 const rules = reactive({
   time: [{required: true, message: '请选择时间', trigger: 'change'}],
-  payment_method: [{required: true, message: '请输入支付方式', trigger: 'blur'}],
-  counterparty: [{required: true, message: '请输入交易对方', trigger: 'blur'}],
+  payment_method: [{required: true, message: '请选择支付方式', trigger: 'change'}],
+  counterparty: [{required: true, message: '请选择交易对方', trigger: 'change'}],
   amount: [{required: true, message: '请输入金额', trigger: 'blur'}]
 });
 
 // 打开弹窗
 const openDialog = () => {
+  // 重置表单
+  formData.time = '';
+  formData.payment_method = '';
+  formData.counterparty = '';
+  formData.amount = '';
   isShowDialog.value = true;
 };
 
@@ -116,6 +161,7 @@ const onSubmit = () => {
     if (!valid) return;
 
     const { transfer } = useTableApi();
+    console.log('New transfer created: ', formData);
     transfer(formData)
         .then(() => {
           console.log('New transfer created: ', formData.time);
