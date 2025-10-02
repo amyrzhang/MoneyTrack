@@ -1,4 +1,5 @@
 import request from '/@/utils/request';
+import {UnwrapRef} from "vue";
 
 /**
  * 证券交易记录接口
@@ -35,7 +36,7 @@ export function useTransactionApi() {
             });
         },
         // 更新证券交易记录
-        updateTransaction: (transaction_id: string, data?: object) => {
+        updateTransaction: (transaction_id: UnwrapRef<number>, data?: object) => {
             return request({
                 url: `/trans/${transaction_id}`,
                 method: 'put',

@@ -80,14 +80,14 @@ const state = reactive({
     submitTxt: '',
   },
   ruleForm: {
-    id: '',
+    transaction_id: 0,
     timestamp: '',
     stock_code: '',
     type: '',
-    price: '',
-    quantity: '',
-    amount: '',
-    fee: '',
+    price: 0.00,
+    quantity: 0.00,
+    amount: 0.00,
+    fee: 0.00,
   },
 });
 
@@ -123,9 +123,16 @@ const onCancel = () => {
 
 // 重置表单
 const resetForm = () => {
-  Object.keys(state.ruleForm).forEach(key => {
-    state.ruleForm[key] = '';
-  });
+  state.ruleForm = {
+    transaction_id: 0,
+    timestamp: '',
+    stock_code: '',
+    type: '',
+    price: 0,
+    quantity: 0,
+    amount: 0,
+    fee: 0,
+  };
 };
 
 // 提交
@@ -135,11 +142,20 @@ const onSubmit = () => {
     
     state.dialog.loading = true;
     
+    // 确保数值字段是数字类型
+    const formData = {
+      ...state.ruleForm,
+      price: parseFloat(state.ruleForm.price as any) || 0,
+      quantity: parseFloat(state.ruleForm.quantity as any) || 0,
+      amount: parseFloat(state.ruleForm.amount as any) || 0,
+      fee: parseFloat(state.ruleForm.fee as any) || 0
+    };
+    
     const { createTransaction, updateTransaction } = useTransactionApi();
     
     if (state.dialog.title === '修改证券交易记录') {
       // 修改证券交易记录
-      updateTransaction(state.ruleForm.id, state.ruleForm)
+      updateTransaction(formData.transaction_id, formData)
         .then(() => {
           ElMessage.success('修改成功');
           closeDialog();
@@ -154,9 +170,8 @@ const onSubmit = () => {
         });
     } else {
       // 新增证券交易记录
-      createTransaction([state.ruleForm])
+      createTransaction([formData])
         .then(() => {
-          console.log('New transaction created: ', [state.ruleForm])
           ElMessage.success('新增成功');
           closeDialog();
           emit('refresh');
