@@ -191,7 +191,7 @@ const getTransactionData = () => {
           tradeDate: formatDate(new Date(item.timestamp)),
           securityCode: item.stock_code,
           tradeType: item.type.toLowerCase(),
-          price: verifyNumberRMB(item.price, 3),
+          price: verifyNumberRMB(item.price, 4),
           amount: verifyNumberRMB(item.amount),
           fee: verifyNumberRMB(item.fee)
         };
