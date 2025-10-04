@@ -182,7 +182,7 @@ const getTransactionData = () => {
 
   getTransactions(cleanedParams)
     .then((res: any) => {
-      console.log('cleanedParams', cleanedParams)
+      console.log('res', res)
       state.tableData.data = res.data.map((item: any) => {
         return {
           ...item,
@@ -248,7 +248,8 @@ const onRowDel = (row: any) => {
     .then(async () => {
       const { deleteTransaction } = useTransactionApi();
       try {
-        await deleteTransaction(row.id);
+        console.log('deleteTransaction', row.transaction_id)
+        await deleteTransaction(row.transaction_id);
         ElMessage.success('删除成功');
         getTransactionData();
       } catch (err) {

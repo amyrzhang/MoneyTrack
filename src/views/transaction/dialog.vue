@@ -25,6 +25,7 @@
               <el-select v-model="state.ruleForm.type" placeholder="请选择交易类型" clearable class="w100">
                 <el-option label="买入" value="BUY"></el-option>
                 <el-option label="卖出" value="SELL"></el-option>
+                <el-option label="红利入账" value="DIVIDEND"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -46,6 +47,14 @@
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
             <el-form-item label="手续费">
               <el-input v-model="state.ruleForm.fee" placeholder="请输入手续费" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+            <el-form-item label="交易对方">
+              <el-select v-model="state.ruleForm.payment_method" placeholder="请选择交易对方" clearable>
+                <el-option value="东方财富证券(5700)">东方财富证券(5700)</el-option>
+                <el-option value="招商银行储蓄卡(7752)">招商银行储蓄卡(7752)</el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -88,6 +97,7 @@ const state = reactive({
     quantity: 0.00,
     amount: 0.00,
     fee: 0.00,
+    payment_method: '东方财富证券(5700)'
   },
 });
 
@@ -132,6 +142,7 @@ const resetForm = () => {
     quantity: 0,
     amount: 0,
     fee: 0,
+    payment_method: ''
   };
 };
 
