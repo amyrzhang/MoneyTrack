@@ -10,7 +10,10 @@
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             default-expand-all
           >
-            <el-table-column prop="name" label="资产账户">
+            <el-table-column prop="name" label="资产账户" min-width="150">
+              <template #default="scope">
+                <span>{{ scope.row.name }}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="balance" label="余额(￥)" align="right">
               <template #default="scope">
@@ -42,6 +45,18 @@
                 {{ formatPercent(scope.row.percent) }}
               </template>
             </el-table-column>
+            <el-table-column label="操作" align="center" width="120">
+              <template #default="scope">
+                <el-link
+                  type="primary"
+                  v-if="scope.row.children && scope.row.children.length === 0" 
+                  @click="goToBill(scope.row.name)"
+                  :underline="false"
+                >
+                  查看流水记录
+                </el-link>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-tab-pane>
@@ -55,11 +70,13 @@
 
 <script setup lang="ts" name="assets">
 import { reactive, ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useTableApi } from '/@/api/table';
 import Positions from '/@/views/assets/positions.vue';
 
 // 定义变量内容
 const activeTab = ref('overview');
+const router = useRouter();
 
 const state = reactive({
 	tableData: [],
@@ -91,6 +108,16 @@ const formatPercent = (value: string | number) => {
   
   // 格式化为百分比形式，保留两位小数
   return `${num.toFixed(2)}%`;
+};
+
+// 跳转到账单管理页面
+const goToBill = (accountName: string) => {
+  router.push({
+    name: 'bill',
+    query: {
+      payment_method: accountName
+    }
+  });
 };
 
 // 构建树形表格数据

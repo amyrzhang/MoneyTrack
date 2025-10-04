@@ -18,6 +18,7 @@
           <el-option label="债券" value="bond"></el-option>
         </el-select>
         <el-input v-model="searchForm.stock_code" placeholder="证券代码" clearable class="mr10" style="width: 150px;"></el-input>
+        <el-input v-model="searchForm.accountName" placeholder="资产账户" clearable class="mr10" style="width: 150px;"></el-input>
         <el-button size="default" type="primary" class="ml10" @click="getTransactionData">
           <el-icon>
             <ele-Search />
@@ -127,6 +128,7 @@
 
 <script setup lang="ts" name="transaction">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useTransactionApi } from '/@/api/transaction';
 import { verifyNumberRMB } from '/@/utils/toolsValidate';
@@ -136,10 +138,12 @@ const TransactionDialog = defineAsyncComponent(() => import('./dialog.vue'));
 
 // 定义变量内容
 const transactionDialogRef = ref();
+const route = useRoute();
 const searchForm = reactive({
   dateRange: [],
   type: '',
-  stock_code: ''
+  stock_code: '',
+  accountName: ''
 });
 
 const statisticsData = reactive({
@@ -172,7 +176,8 @@ const getTransactionData = () => {
     startDate: searchForm.dateRange && searchForm.dateRange[0] ? searchForm.dateRange[0] : undefined,
     endDate: searchForm.dateRange && searchForm.dateRange[1] ? searchForm.dateRange[1] : undefined,
     type: searchForm.type || undefined,
-    stock_code: searchForm.stock_code || undefined
+    stock_code: searchForm.stock_code || undefined,
+    accountName: searchForm.accountName || undefined
   };
 
   // 移除空参数
@@ -276,6 +281,19 @@ const onHandleCurrentChange = (val: number) => {
 
 // 页面加载时
 onMounted(() => {
+  // 检查路由查询参数并填充搜索表单
+  if (route.query.stock_code) {
+    searchForm.stock_code = route.query.stock_code.toString();
+  }
+  
+  if (route.query.type) {
+    searchForm.type = route.query.type.toString();
+  }
+
+  if (route.query.accountName) {
+    searchForm.accountName = route.query.accountName.toString();
+  }
+  
   getTransactionData();
 });
 

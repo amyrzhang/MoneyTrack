@@ -138,6 +138,7 @@
 
 <script setup lang="ts" name="systemUser">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useTableApi } from "/@/api/table";
 import { verifyNumberRMB } from "/@/utils/toolsValidate";
@@ -151,6 +152,7 @@ const TransferDialog = defineAsyncComponent(() => import('/@/views/bill/transfer
 const userDialogRef = ref();
 const transferDialogRef = ref();
 const value2 = ref('');
+const route = useRoute();
 
 // 搜索表单
 const searchForm = reactive({
@@ -323,7 +325,12 @@ const onHandleCurrentChange = (val: number) => {
 };
 // 页面加载时
 onMounted(() => {
-	getTableData();
+  // 检查路由查询参数并填充搜索表单
+  if (route.query.payment_method) {
+    searchForm.payment_method = route.query.payment_method.toString();
+  }
+  
+  getTableData();
 });
 </script>
 

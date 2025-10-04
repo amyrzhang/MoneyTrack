@@ -82,6 +82,13 @@
             {{ formatNumber(scope.row.position_ratio * 100, 2) }}%
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="120">
+          <template #default="scope">
+            <el-link type="primary" @click="viewTransactionRecords(scope.row.stock_code)" :underline="false">
+              查看交易记录
+            </el-link>
+          </template>
+        </el-table-column>
       </el-table>
       
       <el-pagination
@@ -103,6 +110,7 @@
 
 <script setup lang="ts" name="assetPositions">
 import { reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useTableApi } from '/@/api/table';
 
 // 定义变量内容
@@ -119,6 +127,8 @@ const state = reactive({
     totalUnrealizedPnl: 0  // 持仓盈亏总和
   }
 });
+
+const router = useRouter();
 
 // 格式化数字显示，添加千分位逗号分隔符
 const formatNumber = (value: number, digits: number = 2) => {
@@ -178,6 +188,16 @@ const onHandleSizeChange = (val: number) => {
 const onHandleCurrentChange = (val: number) => {
   state.queryParams.pageNum = val;
   getPositionsData();
+};
+
+// 查看交易记录
+const viewTransactionRecords = (stockCode: string) => {
+  router.push({
+    name: 'transaction',
+    query: {
+      stock_code: stockCode
+    }
+  });
 };
 
 // 页面加载时获取数据
