@@ -12,10 +12,10 @@
           end-placeholder="结束日期"
           class="mr10"
         ></el-date-picker>
-        <el-select v-model="searchForm.type" placeholder="证券类型" clearable class="mr10">
-          <el-option label="股票" value="stock"></el-option>
-          <el-option label="基金" value="fund"></el-option>
-          <el-option label="债券" value="bond"></el-option>
+        <el-select v-model="searchForm.type" placeholder="交易类型" clearable class="mr10">
+          <el-option label="买入" value="BUY"></el-option>
+          <el-option label="卖出" value="SELL"></el-option>
+          <el-option label="红利入账" value="DIVIDEND"></el-option>
         </el-select>
         <el-input v-model="searchForm.stock_code" placeholder="证券代码" clearable class="mr10" style="width: 150px;"></el-input>
         <el-input v-model="searchForm.accountName" placeholder="资产账户" clearable class="mr10" style="width: 150px;"></el-input>
@@ -81,14 +81,6 @@
         <el-table-column prop="timestamp" label="交易日期" min-width="100" show-overflow-tooltip></el-table-column>
         <el-table-column prop="stock_code" label="证券代码" show-overflow-tooltip></el-table-column>
         <el-table-column prop="securityName" label="证券名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="type" label="证券类型" show-overflow-tooltip>
-          <template #default="scope">
-            <el-tag v-if="scope.row.type === 'stock'">股票</el-tag>
-            <el-tag v-else-if="scope.row.type === 'fund'">基金</el-tag>
-            <el-tag v-else-if="scope.row.type === 'bond'">债券</el-tag>
-            <span v-else>{{ scope.row.type }}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="type" label="交易类型" show-overflow-tooltip>
           <template #default="scope">
             <el-tag type="success" v-if="scope.row.type === 'buy'">买入</el-tag>
@@ -190,12 +182,12 @@ const getTransactionData = () => {
 
   getTransactions(cleanedParams)
     .then((res: any) => {
+      console.log('cleanedParams', cleanedParams)
       state.tableData.data = res.data.map((item: any) => {
         return {
           ...item,
           tradeDate: formatDate(new Date(item.timestamp)),
           securityCode: item.stock_code,
-          tradeType: item.type.toLowerCase(),
           price: verifyNumberRMB(item.price, 4),
           amount: verifyNumberRMB(item.amount),
           fee: verifyNumberRMB(item.fee)

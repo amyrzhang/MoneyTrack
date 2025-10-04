@@ -16,6 +16,14 @@
 					<el-option label="不计收支" value="不计收支"></el-option>
 				</el-select>
 				
+				<el-select v-model="searchForm.type" clearable placeholder="请选择类型" class="ml10" style="width: 150px;">
+          <el-option label="工资薪金" value="工资薪金"></el-option>
+          <el-option label="劳务报酬" value="劳务报酬"></el-option>
+          <el-option label="自转账" value="自转账"></el-option>
+          <el-option label="申购" value="申购"></el-option>
+          <el-option label="赎回" value="赎回"></el-option>
+				</el-select>
+				
 				<el-input v-model="searchForm.source" placeholder="请输入来源" clearable class="ml10" style="width: 150px;"></el-input>
 				
 				<el-input v-model="searchForm.payment_method" placeholder="请输入支付方式" clearable class="ml10" style="width: 150px;"></el-input>
@@ -157,6 +165,7 @@ const route = useRoute();
 // 搜索表单
 const searchForm = reactive({
   debit_credit: '',
+  type: '',
   source: '',
   payment_method: ''
 });
@@ -198,6 +207,7 @@ const getTableData = (params?: EmptyObjectType) => {
     ...state.tableData.param,  // 使用传入的 params（如分页参数）
     time: value2.value,
     debit_credit: searchForm.debit_credit,
+    type: searchForm.type,
     source: searchForm.source,
     payment_method: searchForm.payment_method
   }
