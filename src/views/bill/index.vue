@@ -15,7 +15,6 @@
 					<el-option label="支出" value="支出"></el-option>
 					<el-option label="不计收支" value="不计收支"></el-option>
 				</el-select>
-				
 				<el-select v-model="searchForm.type" clearable placeholder="请选择类型" class="ml10" style="width: 150px;">
           <el-option label="工资薪金" value="工资薪金"></el-option>
           <el-option label="劳务报酬" value="劳务报酬"></el-option>
@@ -23,11 +22,18 @@
           <el-option label="申购" value="申购"></el-option>
           <el-option label="赎回" value="赎回"></el-option>
 				</el-select>
-				
 				<el-input v-model="searchForm.source" placeholder="请输入来源" clearable class="ml10" style="width: 150px;"></el-input>
-				
-				<el-input v-model="searchForm.payment_method" placeholder="请输入支付方式" clearable class="ml10" style="width: 150px;"></el-input>
-				
+				<el-select v-model="searchForm.payment_method" placeholder="请选择支付方式" clearable class="ml10" style="width: 150px;">
+          <el-option label="交通银行储蓄卡(9585)" value="交通银行储蓄卡(9585)"></el-option>
+          <el-option label="民生银行储蓄卡(4827)" value="民生银行储蓄卡(4827)"></el-option>
+          <el-option label="沧州银行储蓄卡(3043)" value="沧州银行储蓄卡(3043)"></el-option>
+          <el-option label="北京银行储蓄卡(3574)" value="北京银行储蓄卡(3574)"></el-option>
+          <el-option label="招商银行储蓄卡(7752)" value="招商银行储蓄卡(7752)"></el-option>
+          <el-option label="华夏银行储蓄卡(8041)" value="华夏银行储蓄卡(8041)"></el-option>
+          <el-option label="东方财富证券(5700)" value="东方财富证券(5700)"></el-option>
+          <el-option label="零钱" value="零钱"></el-option>
+          <el-option label="余额宝" value="余额宝"></el-option>
+        </el-select>
 				<el-button size="default" type="primary" class="ml10" @click="getTableData">
 					<el-icon>
 						<ele-Search />
@@ -317,7 +323,6 @@ const handleUploadSuccess = (response: any, file: any) => {
 	console.log(response);
 };
 const handleUploadError = (err: any, file: any) => {
-	console.log(err);
 	if (err.response.status === 409) {
 		errorMessage = '文件已存在';
 	}

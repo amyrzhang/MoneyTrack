@@ -153,6 +153,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				}
 			},
 			{
+				path: '/statement',
+				name: 'statement',
+				component: () => import('/@/views/statement/index.vue'),
+				meta: {
+					title: 'message.router.statement',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'iconfont icon-caidan',
+				}
+			},
+			{
 				path: '/personal',
 				name: 'personal',
 				component: () => import('/@/views/personal/index.vue'),

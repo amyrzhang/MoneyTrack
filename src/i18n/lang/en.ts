@@ -74,6 +74,7 @@ export default {
 		layoutLinkView: 'LinkView',
 		layoutIframeViewOne: 'IframeViewOne',
 		layoutIframeViewTwo: 'IframeViewTwo',
+		statement: 'statement',
 	},
 	staticRoutes: {
 		signIn: 'signIn',

@@ -8,6 +8,7 @@ export default {
 		reportMonthly: '月度统计',
 		reportAnnual: '年度统计',
 		personal: '个人中心',
+		statement: '对账单',
 	},
 	staticRoutes: {
 		signIn: '登录',
