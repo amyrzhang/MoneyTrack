@@ -56,7 +56,7 @@
         <el-upload
             style="display: inline-block; vertical-align: top;"
             class="upload-btn ml10"
-            action="http://43.134.233.6:18080/upload"
+            action="http://43.134.233.6:18080/api/cashflow/upload"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
         >
