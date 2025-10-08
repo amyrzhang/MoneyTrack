@@ -83,7 +83,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive, ref } from 'vue';
-import { useReportApi } from '/@/api/report';
+import { useStatementApi } from '/@/api/report';
 import { verifyNumberRMB } from '/@/utils/toolsValidate';
 
 // 定义变量内容
@@ -150,7 +150,7 @@ const calculateAccumulatedData = (data: any[]) => {
 };
 
 const initTableData = async () => {
-  const { getMonthlyBalance } = useReportApi();
+  const { getMonthlyBalance } = useStatementApi();
 	const params = {
 		time: value.value,
 	};

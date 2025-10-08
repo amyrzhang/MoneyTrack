@@ -25,7 +25,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive } from 'vue';
-import { useReportApi } from '/@/api/report';
+import { useStatementApi } from '/@/api/report';
 
 // 定义变量内容
 const state = reactive({
@@ -33,7 +33,7 @@ const state = reactive({
 });
 
 const initTableData = async () => {
-  const { getAnnualBalance, getQuarterlyBalance } = useReportApi();
+  const { getAnnualBalance, getQuarterlyBalance } = useStatementApi();
   // 获取年度账单数据
   getAnnualBalance().then((res) => {
     state.tableData[0] = res;

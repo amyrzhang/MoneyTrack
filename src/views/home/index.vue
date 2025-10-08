@@ -62,7 +62,7 @@ import {nextTick, onActivated, onMounted, reactive, watch} from 'vue';
 import {storeToRefs} from 'pinia';
 import {useThemeConfig} from '/@/stores/themeConfig';
 import {useTagsViewRoutes} from '/@/stores/tagsViewRoutes';
-import {useReportApi} from "/@/api/report";
+import {useStatementApi} from "/@/api/report";
 import {verifyNumberRMB} from '/@/utils/toolsValidate'
 
 // 定义变量内容
@@ -118,8 +118,8 @@ const state = reactive({
 
 // 数据卡片
 const initCard = () => {
-  const { getReport } = useReportApi(); // 获取 API 数据
-  getReport()
+  const { getStatement } = useStatementApi(); // 获取 API 数据
+  getStatement()
       .then((res) => {
         state.homeOne[0].num1 = verifyNumberRMB(res['balance']);
         state.homeOne[1].num1 = verifyNumberRMB(res['income']);
@@ -132,7 +132,7 @@ const initCard = () => {
 };
 
 const initTableData1 = () => {
-	const { getExpCategory } = useReportApi();
+	const { getExpCategory } = useStatementApi();
 	getExpCategory().then((res) => {
 		// eslint-disable-next-line no-console
 		console.log(res);
@@ -141,7 +141,7 @@ const initTableData1 = () => {
 };
 
 const initTableData = () => {
-  const { getExpTop10 } = useReportApi();
+  const { getExpTop10 } = useStatementApi();
   getExpTop10().then((res) => {
 
     // 计算累计金额和占比

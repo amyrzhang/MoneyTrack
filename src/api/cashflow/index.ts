@@ -10,32 +10,32 @@ import request from '/@/utils/request';
  * @method updateBillRecord 获取后端动态路由菜单(admin)
  * @method createBillRecord 获取后端动态路由菜单(test)
  */
-export function useTableApi() {
+export function useCashflowApi() {
     return {
-        getTable: (params?: object) => {
+        getCashflow: (params?: object) => {
             return request({
-                url: '/transactions',
+                url: '/api/cashflow',
                 method: 'get',
                 params,
             });
         },
-        getAccountBalance: (params?: object) => {
+        getAssetBalance: (params?: object) => {
             return request({
-                url: '/account/balance',
+                url: '/api/asset/balance',
                 method: 'get',
                 params,
             });
         },
         transfer: (data?: object) => {
             return request({
-                url: '/transfer',
+                url: '/api/cashflow/transfer',
                 method: 'post',
                 data
             });
         },
         getPosition: (params?: object) => {
             return request({
-                url: '/positions',
+                url: '/api/asset/position',
                 method: 'get',
                 params,
             });

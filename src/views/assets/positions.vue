@@ -111,7 +111,7 @@
 <script setup lang="ts" name="assetPositions">
 import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useTableApi } from '/@/api/table';
+import { useCashflowApi } from '/src/api/cashflow';
 
 // 定义变量内容
 const state = reactive({
@@ -165,7 +165,7 @@ const calculateStatistics = (data: any[]) => {
 const getPositionsData = async () => {
   state.loading = true;
   try {
-    const { getPosition } = useTableApi();
+    const { getPosition } = useCashflowApi();
     const res = await getPosition(state.queryParams);
     state.tableData = res.data || [];
     state.total = res.total || 0;

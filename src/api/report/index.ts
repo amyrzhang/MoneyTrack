@@ -10,46 +10,46 @@ import request from '/@/utils/request';
  * @method updateBillRecord 获取后端动态路由菜单(admin)
  * @method createBillRecord 获取后端动态路由菜单(test)
  */
-export function useReportApi() {
+export function useStatementApi() {
     return {
-        getReport: (params?: object) => {
+        getStatement: (params?: object) => {
             return request({
-                url: '/report',
+                url: '/api/statement',
                 method: 'get',
                 params,
             });
         },
         getExpCategory: (params?: object) => {
             return request({
-                url: '/report/category',
+                url: '/api/statement/category',
                 method: 'get',
                 params,
             });
         },
         getExpTop10: (params?: object) => {
             return request({
-                url: '/report/top10',
+                url: '/api/statement/top10',
                 method: 'get',
                 params
             })
         },
         getMonthlyBalance: (params?: object) => {
             return request({
-                url: '/monthly/balance',
+                url: '/api/statement/balance/monthly',
                 method: 'get',
                 params,
             });
         },
         getQuarterlyBalance: (params?: object) => {
             return request({
-                url: '/quarterly/balance',
+                url: '/api/statement/balance/quarterly',
                 method: 'get',
                 params,
             });
         },
         getAnnualBalance: (params?: object) => {
             return request({
-                url: '/annual/balance',
+                url: '/api/statement/balance/annual',
                 method: 'get',
                 params,
             });

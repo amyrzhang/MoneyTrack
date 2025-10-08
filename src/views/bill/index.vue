@@ -154,7 +154,7 @@
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { useTableApi } from "/@/api/table";
+import { useCashflowApi } from "/src/api/cashflow";
 import { verifyNumberRMB } from "/@/utils/toolsValidate";
 import { UploadFilled } from "@element-plus/icons-vue";
 
@@ -196,7 +196,7 @@ const state = reactive<SysUserState>({
 
 // 初始化表格数据
 const getTableData = (params?: EmptyObjectType) => {
-  const { getTable } = useTableApi();
+  const { getCashflow } = useCashflowApi();
   state.tableData.loading = true;
   state.tableData.data = [];
 
@@ -219,9 +219,9 @@ const getTableData = (params?: EmptyObjectType) => {
   }
 
   let newParams = removeEmptyProperties(combineParams)
-
-  getTable(newParams)
+  getCashflow(newParams)
       .then((res) => {
+        console.log('res', res)
         // 对 res 中的每个元素进行格式化处理
         const formattedData = res.data.map(item => ({
           ...item,

@@ -102,7 +102,7 @@ declare interface WheelEventType extends WheelEvent {
 	wheelDelta: number;
 }
 
-// table 数据格式公共类型
+// cashflow 数据格式公共类型
 declare interface TableType<T = any> {
 	total: number;
 	loading: boolean;

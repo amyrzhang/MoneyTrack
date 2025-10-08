@@ -71,7 +71,7 @@
 <script setup lang="ts" name="assets">
 import { reactive, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useTableApi } from '/@/api/table';
+import { useCashflowApi } from '/src/api/cashflow';
 import Positions from '/@/views/assets/positions.vue';
 
 // 定义变量内容
@@ -176,9 +176,9 @@ const treeTableData = computed(() => {
 });
 
 const initTableData = async () => {
-  const { getAccountBalance } = useTableApi();
+  const { getAssetBalance } = useCashflowApi();
   try {
-    const res = await getAccountBalance();
+    const res = await getAssetBalance();
     state.tableData = res;
   } catch (error) {
     console.error('Failed to fetch account balance:', error);

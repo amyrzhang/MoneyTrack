@@ -82,7 +82,7 @@
 <script setup lang="ts" name="transferDialog">
 import { reactive, ref, getCurrentInstance } from 'vue';
 import { ElMessage } from 'element-plus';
-import { useTableApi } from '/@/api/table';
+import { useCashflowApi } from '/src/api/cashflow';
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -160,7 +160,7 @@ const onSubmit = () => {
   formRef.value.validate((valid: boolean) => {
     if (!valid) return;
 
-    const { transfer } = useTableApi();
+    const { transfer } = useCashflowApi();
     console.log('New transfer created: ', formData);
     transfer(formData)
         .then(() => {
