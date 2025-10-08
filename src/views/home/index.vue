@@ -62,7 +62,7 @@ import {nextTick, onActivated, onMounted, reactive, watch} from 'vue';
 import {storeToRefs} from 'pinia';
 import {useThemeConfig} from '/@/stores/themeConfig';
 import {useTagsViewRoutes} from '/@/stores/tagsViewRoutes';
-import {useStatementApi} from "/@/api/report";
+import {useStatementApi} from "/src/api/statement";
 import {verifyNumberRMB} from '/@/utils/toolsValidate'
 
 // 定义变量内容

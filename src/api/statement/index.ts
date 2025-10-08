@@ -54,5 +54,12 @@ export function useStatementApi() {
                 params,
             });
         },
+        getBankStatementMonthlyAgg: (params?: object) => {
+            return request({
+                url: '/api/bank-statement/monthly-agg',
+                method: 'get',
+                params,
+            });
+        },
     };
 }

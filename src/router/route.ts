@@ -78,49 +78,19 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 			},
 			{
-				path: '/report',
-				name: 'report',
-				component: () => import('/@/layout/routerView/parent.vue'),
+				path: '/statement',
+				name: 'statement',
+				component: () => import('/@/views/statement/index.vue'),
 				meta: {
-					title: 'message.router.report',
+					title: 'message.router.statement',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,
 					isAffix: false,
 					isIframe: false,
-					roles: ['admin', 'common'],
-					icon: 'iconfont icon-xuanzeqi',
-				},
-				children: [
-					{
-						path: '/report/monthly',
-						name: 'monthly',
-						component: () => import('/@/views/report/monthly/index.vue'),
-						meta: {
-							title: 'message.router.reportMonthly',
-							isLink: '',
-							isHide: false,
-							isKeepAlive: true,
-							isAffix: false,
-							isIframe: false,
-							roles: ['admin', 'common'],
-						}
-					},
-					{
-						path: '/report/annual',
-						name: 'annual',
-						component: () => import('/@/views/report/annual/index.vue'),
-						meta: {
-							title: 'message.router.reportAnnual',
-							isLink: '',
-							isHide: false,
-							isKeepAlive: true,
-							isAffix: false,
-							isIframe: false,
-							roles: ['admin', 'common'],
-						}
-					}
-				]
+					roles: ['admin'],
+					icon: 'iconfont icon-caidan',
+				}
 			},
 			{
 				path: '/bill',
@@ -143,21 +113,6 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				component: () => import('/@/views/transaction/index.vue'),
 				meta: {
 					title: '证券交易记录',
-					isLink: '',
-					isHide: false,
-					isKeepAlive: true,
-					isAffix: false,
-					isIframe: false,
-					roles: ['admin'],
-					icon: 'iconfont icon-caidan',
-				}
-			},
-			{
-				path: '/statement',
-				name: 'statement',
-				component: () => import('/@/views/statement/index.vue'),
-				meta: {
-					title: 'message.router.statement',
 					isLink: '',
 					isHide: false,
 					isKeepAlive: true,

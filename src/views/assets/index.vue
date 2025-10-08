@@ -71,7 +71,7 @@
 <script setup lang="ts" name="assets">
 import { reactive, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useCashflowApi } from '/src/api/cashflow';
+import { useCashflowApi } from '/@/api/cashflow';
 import Positions from '/@/views/assets/positions.vue';
 
 // 定义变量内容

@@ -14,14 +14,14 @@ export function useBillApi() {
 	return {
 		updateBillRecord: (data?: object) => {
 			return request({
-				url: '/api/transaction',
+				url: '/api/cashflow',
 				method: 'put',
 				data,
 			});
 		},
 		createBillRecord: (data?: object) => {
 			return request({
-				url: '/api/transaction',
+				url: '/api/cashflow',
 				method: 'post',
 				data,
 			});

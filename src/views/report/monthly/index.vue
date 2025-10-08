@@ -83,7 +83,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive, ref } from 'vue';
-import { useStatementApi } from '/@/api/report';
+import { useStatementApi } from '/src/api/statement';
 import { verifyNumberRMB } from '/@/utils/toolsValidate';
 
 // 定义变量内容

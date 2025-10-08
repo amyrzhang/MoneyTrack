@@ -25,7 +25,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive } from 'vue';
-import { useStatementApi } from '/@/api/report';
+import { useStatementApi } from '/src/api/statement';
 
 // 定义变量内容
 const state = reactive({
