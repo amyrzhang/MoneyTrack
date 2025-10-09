@@ -142,7 +142,7 @@ const resetForm = () => {
     quantity: 0,
     amount: 0,
     fee: 0,
-    payment_method: ''
+    payment_method: '东方财富证券(5700)'
   };
 };
 

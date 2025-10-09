@@ -279,9 +279,9 @@ const calculateStatistics = (data: RowBillType[]) => {
   data.forEach(item => {
     // 确保金额是数字类型
     const amount = parseFloat(String(item.amount)) || 0;
-    if (item.debit_credit === '收入') {
+    if (item.debit_credit === '收入' && item.payment_method !== '东方财富证券(5700)') {
       income += amount;
-    } else if (item.debit_credit === '支出') {
+    } else if (item.debit_credit === '支出' && item.payment_method !== '东方财富证券(5700)') {
       expense += amount;
     }
   });
