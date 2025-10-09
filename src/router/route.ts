@@ -80,7 +80,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 			{
 				path: '/statement',
 				name: 'statement',
-				component: () => import('/@/views/statement/index.vue'),
+				component: () => import('/@/layout/routerView/parent.vue'),
 				meta: {
 					title: 'message.router.statement',
 					isLink: '',
@@ -88,9 +88,39 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					isKeepAlive: true,
 					isAffix: false,
 					isIframe: false,
-					roles: ['admin'],
-					icon: 'iconfont icon-caidan',
-				}
+					roles: ['admin', 'common'],
+					icon: 'iconfont icon-xuanzeqi',
+				},
+				children: [
+					{
+						path: '/report-monthly',
+						name: 'monthly',
+						component: () => import('/@/views/report/monthly/index.vue'),
+						meta: {
+							title: 'message.router.reportMonthly',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin', 'common'],
+						}
+					},
+                    {
+                        path: '/bank-statement',
+                        name: 'bankStatement',
+                        component: () => import('/@/views/statement/index.vue'),
+                        meta: {
+                            title: 'message.router.bankStatement',
+                            isLink: '',
+                            isHide: false,
+                            isKeepAlive: true,
+                            isAffix: false,
+                            isIframe: false,
+                            roles: ['admin', 'common'],
+                        }
+                    }
+				]
 			},
 			{
 				path: '/bill',
@@ -137,6 +167,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					icon: 'iconfont icon-gerenzhongxin',
 				},
 			},
+
 		],
 	},
 ];

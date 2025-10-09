@@ -83,7 +83,7 @@
 
 <script setup lang="ts" name="makeSelector">
 import { reactive, ref } from 'vue';
-import { useStatementApi } from '/src/api/statement';
+import { useStatementApi } from '/@/api/statement';
 import { verifyNumberRMB } from '/@/utils/toolsValidate';
 
 // 定义变量内容
@@ -98,7 +98,9 @@ const summaryData = reactive({
 	maxIncomeMonth: '无'
 });
 
-const value = ref('');
+// 获取当前年份作为默认值
+const currentYear = new Date().getFullYear().toString();
+const value = ref(currentYear);
 
 // 计算汇总数据
 const calculateSummary = (data: any[]) => {
