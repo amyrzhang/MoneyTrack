@@ -89,9 +89,16 @@ import { reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import request from '/@/utils/request';
 
+// 获取上个月的年月格式
+const getLastMonth = () => {
+	const now = new Date();
+	const lastMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+	return lastMonth.toISOString().slice(0, 7);
+};
+
 // 定义变量内容
 const searchForm = reactive({
-	month: new Date().toISOString().slice(0, 7) // 默认为当前月份
+	month: getLastMonth() // 默认为上个月
 });
 
 const statementData = reactive({

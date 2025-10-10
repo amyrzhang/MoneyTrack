@@ -102,7 +102,7 @@
 						<div class="flex">
 							<div class="flex-auto">
 								<span class="font30">{{ statisticsData.balance }}</span>
-								<div class="mt10">结余</div>
+								<div class="mt10">现金净流入</div>
 							</div>
 							<div class="home-card-item-icon flex" style="background: var(--el-color-primary-light-9);">
 								<i class="flex-margin font32 iconfont icon-balance" style="color: var(--el-color-primary);"></i>

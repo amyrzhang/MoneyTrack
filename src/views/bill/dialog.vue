@@ -97,7 +97,8 @@ const state = reactive({
     '招商银行储蓄卡(7752)',
     '东方财富证券(5700)',
     '零钱',
-    '余额宝'
+    '余额宝',
+    '银行账户'
   ],
   dialog: {
     isShowDialog: false,
