@@ -19,6 +19,13 @@ export function useStatementApi() {
                 params,
             });
         },
+        addStatement: (data?: object) => {
+            return request({
+                url: '/api/bank-statement',
+                method: 'post',
+                data
+            });
+        },
         getExpCategory: (params?: object) => {
             return request({
                 url: '/api/statement/category',
