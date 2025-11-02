@@ -70,15 +70,16 @@
 			<el-table :data="tableData" style="width: 100%" v-loading="loading">
 				<el-table-column type="index" label="序号" width="60" />
 				<el-table-column prop="month_date" label="月份" width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="total_opening_balance" label="期初余额" width="150" align="right" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="total_current_period_change" label="本期变动" width="150" align="right" show-overflow-tooltip>
+				<el-table-column prop="account_name" label="账户名称" width="150" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="opening_balance" label="期初余额" width="150" align="right" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="current_period_change" label="本期变动" width="150" align="right" show-overflow-tooltip>
 					<template #default="scope">
-						<span :style="parseFloat(scope.row.total_current_period_change) >= 0 ? 'color: var(--el-color-success);' : 'color: var(--el-color-danger);'">
-							{{ scope.row.total_current_period_change }}
+						<span :style="parseFloat(scope.row.current_period_change) >= 0 ? 'color: var(--el-color-success);' : 'color: var(--el-color-danger);'">
+							{{ scope.row.current_period_change }}
 						</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="total_closing_balance" label="期末余额" width="150" align="right" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="closing_balance" label="期末余额" width="150" align="right" show-overflow-tooltip></el-table-column>
 			</el-table>
 		</el-card>
 	</div>
@@ -87,7 +88,7 @@
 <script setup lang="ts" name="statement">
 import { reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import request from '/@/utils/request';
+import { useStatementApi } from '/@/api/statement';
 
 // 获取上个月的年月格式
 const getLastMonth = () => {
@@ -110,23 +111,40 @@ const statementData = reactive({
 const tableData = ref<any[]>([]);
 const loading = ref(false);
 
+// 计算统计信息
+const calculateStatistics = (data: any[]) => {
+  if (data.length > 0) {
+    let totalOpeningBalance = 0;
+    let totalCurrentPeriodChange = 0;
+    let totalClosingBalance = 0;
+    
+    data.forEach(item => {
+      totalOpeningBalance += parseFloat(item.opening_balance) || 0;
+      totalCurrentPeriodChange += parseFloat(item.current_period_change) || 0;
+      totalClosingBalance += parseFloat(item.closing_balance) || 0;
+    });
+    
+    statementData.openingBalance = totalOpeningBalance.toFixed(2);
+    statementData.currentPeriodChange = totalCurrentPeriodChange.toFixed(2);
+    statementData.closingBalance = totalClosingBalance.toFixed(2);
+  } else {
+    // 如果没有数据，重置统计信息
+    statementData.openingBalance = '0.00';
+    statementData.currentPeriodChange = '0.00';
+    statementData.closingBalance = '0.00';
+  }
+};
+
 // 初始化表格数据
 const getTableData = () => {
-	console.log('getTableData function called');
 	loading.value = true;
   const params = {
-		start_month: searchForm.month + '-01',
-    end_month: searchForm.month + '-01'
+		month_date: searchForm.month + '-01'
 	};
-  console.log('请求参数:', params);
-  
-  request({
-    url: '/api/bank-statement/monthly-agg',
-    method: 'get',
-    params
-  })
+
+  const { getStatement } = useStatementApi();
+  getStatement(params)
     .then((res) => {
-      console.log('API完整响应:', res);
       // 检查响应数据结构
       if (res) {
         // 检查是否有code字段表示状态
@@ -147,16 +165,10 @@ const getTableData = () => {
           data = [res];
         }
         
-        console.log('处理后的数据:', data);
         tableData.value = data;
         
         // 更新统计信息
-        if (data.length > 0) {
-          const latest = data[0];
-          statementData.openingBalance = latest.total_opening_balance || latest.openingBalance || '0.00';
-          statementData.currentPeriodChange = latest.total_current_period_change || latest.currentPeriodChange || '0.00';
-          statementData.closingBalance = latest.total_closing_balance || latest.closingBalance || '0.00';
-        }
+        calculateStatistics(data);
       } else {
         console.warn('响应数据为空或格式不正确');
         tableData.value = [];

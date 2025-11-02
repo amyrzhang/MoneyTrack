@@ -12,9 +12,9 @@ import request from '/@/utils/request';
  */
 export function useBillApi() {
 	return {
-		updateBillRecord: (data?: object) => {
+		updateBillRecord: (cashflow_id: number, data?: object) => {
 			return request({
-				url: '/api/cashflow',
+				url: `/api/cashflow/${cashflow_id}`,
 				method: 'put',
 				data,
 			});

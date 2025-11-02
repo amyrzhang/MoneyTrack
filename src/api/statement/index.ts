@@ -14,7 +14,7 @@ export function useStatementApi() {
     return {
         getStatement: (params?: object) => {
             return request({
-                url: '/api/statement',
+                url: '/api/bank-statement',
                 method: 'get',
                 params,
             });
