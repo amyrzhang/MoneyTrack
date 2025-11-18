@@ -145,13 +145,11 @@ export function verifyNumberComma(val: string) {
  */
 export function verifyNumberRMB(val: number, digits: number = 2): string {
 	const formattedValue = new Intl.NumberFormat('zh-CN', {
-		style: 'currency',
-		currency: 'CNY',
 		minimumFractionDigits: digits,
 		maximumFractionDigits: digits
 	}).format(val);
 	// 确保字符串长度为适当长度，并向左填充空格
-	// 根据小数位数调整最小宽度（整数部分+小数点+小数位数+货币符号）
+	// 根据小数位数调整最小宽度（整数部分+小数点+小数位数）
 	const minWidth = 6 + digits; 
 	return formattedValue.padStart(minWidth, ' ');
 }
