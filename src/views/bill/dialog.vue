@@ -69,7 +69,7 @@
 <script setup lang="ts" name="systemUserDialog">
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { useBillApi } from '/@/api/menu';
+import { useCashflowApi } from '/@/api/cashflow';
 
 // 定义子组件向父组件传值/事件
 const emit = defineEmits(['refresh']);
@@ -78,6 +78,7 @@ const emit = defineEmits(['refresh']);
 const userDialogFormRef = ref();
 const state = reactive({
   ruleForm: {
+    cashflow_id: '',
     time: '',
     source: '',
     debit_credit: '',
@@ -113,6 +114,7 @@ const openDialog = (type: string, row: RowBillType) => {
   if (type === 'edit') {
     // 将RowUserType转换为state.ruleForm的类型
     const adaptedRow = {
+      cashflow_id: row.cashflow_id || '', // 添加这行，确保cashflow_id被正确设置
       time: row.time as string,
       source: row.source || '',
       debit_credit: row.debit_credit || '',
@@ -134,6 +136,7 @@ const openDialog = (type: string, row: RowBillType) => {
     state.dialog.submitTxt = '新 增';
     // 重置表单
     state.ruleForm = {
+      cashflow_id: '',
       time: '',
       source: '',
       debit_credit: '',
@@ -168,9 +171,9 @@ const onSubmit = () => {
     }
 
     // 判断是新增还是编辑
-    if (state.dialog.type === 'edit') {
+    if (state.dialog.title === '修改记录') {
       // 调用 PUT 接口，更新记录
-      useBillApi().updateBillRecord(formData).then(res => {
+      useCashflowApi().updateBillRecord(formData.cashflow_id, formData).then(res => {
         ElMessage.success('修改成功');
         closeDialog();
         emit('refresh');
@@ -183,7 +186,7 @@ const onSubmit = () => {
       // 确保发送的数据格式符合后端要求 - 后端需要的是列表格式
       const requestData = [formData];
 
-      useBillApi().createBillRecord(requestData).then(res => {
+      useCashflowApi().createBillRecord(requestData).then(res => {
         ElMessage.success('新增成功');
         closeDialog();
         emit('refresh');
@@ -199,5 +202,4 @@ const onSubmit = () => {
 defineExpose({
   openDialog,
 });
-
 </script>

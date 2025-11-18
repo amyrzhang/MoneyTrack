@@ -307,14 +307,20 @@ const onOpenEditBill = (type: string, row: RowBillType) => {
 };
 // 删除记录
 const onRowDel = (row: RowBillType) => {
-	ElMessageBox.confirm(`此操作将永久删除账户名称：“${row.userName}”，是否继续?`, '提示', {
+	ElMessageBox.confirm(`此操作将永久删除交易内容：“${row.goods}”，是否继续?`, '提示', {
 		confirmButtonText: '确认',
 		cancelButtonText: '取消',
 		type: 'warning',
 	})
 		.then(() => {
-			getTableData();
-			ElMessage.success('删除成功');
+		  const { deleteBillRecord } = useCashflowApi();
+		  deleteBillRecord(row.cashflow_id).then(() => {
+        getTableData();
+        ElMessage.success('删除成功');
+      }).catch((error) => {
+        ElMessage.error('删除失败');
+        console.error('删除失败:', error);
+      });
 		})
 		.catch(() => {});
 };

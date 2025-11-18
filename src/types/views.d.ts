@@ -83,6 +83,7 @@ declare type TreeType = {
 
 // bill
 declare type RowBillType<T = any> = {
+    cashflow_id: string;
 	time: T;
 	source: string;
 	debit_credit: string;

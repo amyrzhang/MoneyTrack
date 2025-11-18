@@ -19,6 +19,26 @@ export function useCashflowApi() {
                 params,
             });
         },
+        updateBillRecord: (cashflow_id: string, data?: object) => {
+            return request({
+                url: `/api/cashflow/${cashflow_id}`,
+                method: 'put',
+                data,
+            });
+        },
+        createBillRecord: (data?: object) => {
+            return request({
+                url: '/api/cashflow',
+                method: 'post',
+                data,
+            });
+        },
+        deleteBillRecord: (cashflow_id: string) => {
+            return request({
+                url: `/api/cashflow/${cashflow_id}`,
+                method: 'delete',
+            });
+        },
         getAssetBalance: (params?: object) => {
             return request({
                 url: '/api/asset/balance',
